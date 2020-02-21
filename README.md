@@ -1,0 +1,9 @@
+# Petrolês
+
+Algoritmos baseados em aprendizado de máquina são, por definição, dependentes de um conjunto de dados para a realização do seu treinamento. O mesmo ocorre com os algoritmos de processamento de linguagem natural; eles necessitam de uma grande quantidade de textos para conseguir extrair as relações linguísticas e semânticas dos documentos. No entanto, há uma grande dificuldade para o desenvolvimento de modelos de processamento de linguagem natural pela indústria do petróleo no Brasil, pois há uma carência de documentos de referência que sirvam para a realização desses treinamentos. 
+
+O objetivo desse trabalho foi criar o Petrolês, um corpus público formado por teses e dissertações em português no domínio de óleo e gás. Esperamos que esse corpus sirva de referência para os grupos de pesquisas em inteligência artificial e pela indústria do petróleo. Ele poderá ser usado como base de extração de termos técnicos e jargões específicos do setor, bem como para o treinamento e teste de algoritmos de aprendizado de máquina especializados para a indústria do petróleo.
+
+Para a criação desse corpus, utilizamos documentos disponíveis na Biblioteca Digital de Teses e Dissertações (BDTD) do Instituto Brasileiro de Informação em Ciência e Tecnologia (IBICT). No entanto, como a Biblioteca Digital de Teses e Dissertações possui quase 600 mil documentos de todas as áreas do conhecimento, foi necessário identificar se um documento era relevante para a indústria de óleo e gás antes de extraí-lo da base. Treinamos um modelo de aprendizado de máquina para classificar automaticamente as teses e dissertações e programamos um robô para processar centenas de milhares de documentos presentes na Biblioteca Digital de Teses e Dissertações.
+
+O Petrolês é composto por 4.302 documentos, contendo cerca de 6 milhões de sentenças e 74,4 milhões de tokens.

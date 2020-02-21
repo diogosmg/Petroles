@@ -1,0 +1,2989 @@
+
+    
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    \usepackage[breakable]{tcolorbox}
+    \tcbset{nobeforeafter} % prevents tcolorboxes being placing in paragraphs
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Text Classification Petroleo Domain}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \newcommand{\prompt}[4]{
+        \llap{{\color{#2}[#3]: #4}}\vspace{-1.25em}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{classificauxe7uxe3o-de-texto-do-domuxednio-de-uxf3leo-e-guxe1s}{%
+\section{Classificação de Texto do domínio de óleo e
+gás}\label{classificauxe7uxe3o-de-texto-do-domuxednio-de-uxf3leo-e-guxe1s}}
+
+O objetivo deste notebook é fazer um estudo sobre a classificação de
+textos. Serão usadas diversas técnicas para criar um modelo que
+classifique resumos de teses de doutorado e dissertação de mestrado.
+Serão usados documentos elaborados por técnicos da Petrobras, e da
+Biblioteca Digital de Teses e Dissertações. Esperamos que os modelos
+classifiquem corretamente os documentos nos seus respectivos domínios.
+
+Baseado no post de Shivam Bansa\\
+Shivam Bansal. \textbf{A Comprehensive Guide to Understand and
+ImplementText Classification in Python.} Analytics Vidhya. 23 de abr. de
+2018.url:https : / / www . analyticsvidhya . com / blog / 2018 / 04 / a
+-comprehensive - guide - to - understand - and - implement - text
+-classification-in-python/(acesso em 14/08/2019)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Importando bibliotecas}
+\PY{k+kn}{import} \PY{n+nn}{warnings}
+\PY{n}{warnings}\PY{o}{.}\PY{n}{filterwarnings}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ignore}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k}{import} \PY{n}{model\PYZus{}selection}\PY{p}{,} \PY{n}{preprocessing}\PY{p}{,} \PY{n}{linear\PYZus{}model}\PY{p}{,} \PY{n}{naive\PYZus{}bayes}\PY{p}{,} \PY{n}{metrics}\PY{p}{,} \PY{n}{svm}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{feature\PYZus{}extraction}\PY{n+nn}{.}\PY{n+nn}{text} \PY{k}{import} \PY{n}{TfidfVectorizer}\PY{p}{,} \PY{n}{CountVectorizer}
+\PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k}{import} \PY{n}{decomposition}\PY{p}{,} \PY{n}{ensemble}
+\PY{k+kn}{from} \PY{n+nn}{random} \PY{k}{import} \PY{n}{shuffle}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{xgboost}\PY{o}{,} \PY{n+nn}{textblob}\PY{o}{,} \PY{n+nn}{string}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{text}\PY{p}{,} \PY{n}{sequence}
+\PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k}{import} \PY{n}{Sequential}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{utils} \PY{k}{import} \PY{n}{to\PYZus{}categorical}
+\PY{k+kn}{from} \PY{n+nn}{keras} \PY{k}{import} \PY{n}{layers}\PY{p}{,} \PY{n}{models}\PY{p}{,} \PY{n}{optimizers}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{callbacks} \PY{k}{import} \PY{n}{EarlyStopping}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k}{import} \PY{n}{Concatenate}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k}{import} \PY{n}{Layer}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k}{import} \PY{n}{Flatten}
+\PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{initializers} \PY{k}{import} \PY{n}{get}
+\PY{k+kn}{from} \PY{n+nn}{bs4} \PY{k}{import} \PY{n}{BeautifulSoup} \PY{k}{as} \PY{n}{bs}
+\PY{k+kn}{import} \PY{n+nn}{nltk}
+\PY{k+kn}{from}  \PY{n+nn}{nltk}\PY{n+nn}{.}\PY{n+nn}{corpus} \PY{k}{import} \PY{n}{stopwords}
+\PY{k+kn}{from} \PY{n+nn}{nltk}\PY{n+nn}{.}\PY{n+nn}{tokenize} \PY{k}{import} \PY{n}{word\PYZus{}tokenize}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{gensim}
+\PY{k+kn}{from} \PY{n+nn}{gensim}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k}{import} \PY{n}{Word2Vec}
+\PY{k+kn}{from} \PY{n+nn}{langdetect} \PY{k}{import} \PY{n}{detect}
+\PY{k+kn}{from} \PY{n+nn}{langdetect} \PY{k}{import} \PY{n}{detect\PYZus{}langs}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Using TensorFlow backend.
+\end{Verbatim}
+
+    \hypertarget{preparando-os-dados}{%
+\section{Preparando os dados}\label{preparando-os-dados}}
+
+    Lendo arquivos JSON com os dados das teses Petrobras no BDTD, das teses
+no BDTD com assunto ``Petroleo'' e teses de assunto opostos ao de
+interesse Petrobras (``Linguas, Letras e Artes'', ``Arqueologia'',
+``Demografia'', \ldots{})
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{teses\PYZus{}Subject\PYZus{}petroleo} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}json}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BDTD/New\PYZus{}Subject\PYZus{}petroleo.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{orient} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{teses\PYZus{}petrobras\PYZus{}BDTD} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}json}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Petrobras/New\PYZus{}teses\PYZus{}petrobras\PYZus{}BDTD.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{orient} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{tese\PYZus{}mesma\PYZus{}area\PYZus{}Large} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}json}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BDTD/teses\PYZus{}mesmas\PYZus{}areas\PYZus{}Large.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{orient} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{teses\PYZus{}areas\PYZus{}opostas\PYZus{}Large} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}json}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BDTD/teses\PYZus{}areas\PYZus{}opostas\PYZus{}Large.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{orient} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Número total de documentos}
+\PY{n+nb}{len}\PY{p}{(}\PY{n}{tese\PYZus{}mesma\PYZus{}area\PYZus{}Large}\PY{p}{)} \PY{o}{+} \PY{n+nb}{len}\PY{p}{(}\PY{n}{teses\PYZus{}areas\PYZus{}opostas\PYZus{}Large}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+11532
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Unindo as teses de Petróleo }
+\PY{n}{teses\PYZus{}petroleo} \PY{o}{=} \PY{n}{teses\PYZus{}Subject\PYZus{}petroleo}
+\PY{n}{teses\PYZus{}petroleo} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{teses\PYZus{}petrobras\PYZus{}BDTD}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Excluindo teses duplicadas}
+\PY{n}{teses\PYZus{}petroleo} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{teses\PYZus{}petroleo}\PY{o}{.}\PY{n}{index}\PY{o}{.}\PY{n}{duplicated}\PY{p}{(}\PY{n}{keep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Unindo as teses de todas as áreas }
+\PY{n}{teses\PYZus{}areas} \PY{o}{=} \PY{n}{tese\PYZus{}mesma\PYZus{}area\PYZus{}Large}
+\PY{n}{teses\PYZus{}areas} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{teses\PYZus{}areas\PYZus{}opostas\PYZus{}Large}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Excluindo teses duplicadas}
+\PY{n}{teses\PYZus{}areas} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{teses\PYZus{}areas}\PY{o}{.}\PY{n}{index}\PY{o}{.}\PY{n}{duplicated}\PY{p}{(}\PY{n}{keep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Acrescentando a classe nos dois DataFrame
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{classe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Petroleo}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{teses\PYZus{}areas} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{classe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Todas Areas}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Verificando a existência de teses duplicadas nas duas classes
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Unindo as duas classes de documentos}
+\PY{n}{todos} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}
+\PY{n}{todos} \PY{o}{=} \PY{n}{todos}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{teses\PYZus{}areas}\PY{p}{)}
+\PY{n+nb}{len}\PY{p}{(}\PY{n}{todos}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+13885
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Verificando a existência de documentos doplicados}
+\PY{n}{todos} \PY{o}{=} \PY{n}{todos}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{todos}\PY{o}{.}\PY{n}{index}\PY{o}{.}\PY{n}{duplicated}\PY{p}{(}\PY{n}{keep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}
+\PY{n+nb}{len}\PY{p}{(}\PY{n}{todos}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+13845
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}SEparando novamente}
+\PY{n}{teses\PYZus{}petroleo} \PY{o}{=} \PY{n}{todos}\PY{p}{[}\PY{n}{todos}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{classe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Petroleo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{teses\PYZus{}areas} \PY{o}{=} \PY{n}{todos}\PY{p}{[}\PY{n}{todos}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{classe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Todas Areas}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Verificando balanceamento das duas classes
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{teses\PYZus{}petroleo: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{teses\PYZus{}petroleo}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{teses\PYZus{}areas: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{teses\PYZus{}areas}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+teses\_petroleo:  2366
+teses\_areas:  11519
+\end{Verbatim}
+
+    Verificando os campos de resumo
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Excluindo documentos sem resumo em português}
+\PY{n}{teses\PYZus{}petroleo} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{p}{(}\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{notnull}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\PY{n}{teses\PYZus{}areas} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{p}{(}\PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{notnull}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Função que recebe um texto e separa a parte português da parte em inglês}
+\PY{k}{def} \PY{n+nf}{separacao\PYZus{}port\PYZus{}engl}\PY{p}{(}\PY{n}{abstract}\PY{p}{)}\PY{p}{:}
+    
+    \PY{c+c1}{\PYZsh{} Tokeniza os resumos em sentenças }
+    \PY{n}{mix\PYZus{}sent} \PY{o}{=} \PY{n}{nltk}\PY{o}{.}\PY{n}{sent\PYZus{}tokenize}\PY{p}{(}\PY{n}{abstract}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Algumas sentenças vem unidas sem espaço. }
+    \PY{c+c1}{\PYZsh{} Portanto é necessário encontra o ponto final para quebrar a sentença em duas.}
+    \PY{n}{new\PYZus{}mix} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{sent} \PY{o+ow}{in} \PY{n}{mix\PYZus{}sent}\PY{p}{:}
+        \PY{n}{position} \PY{o}{=} \PY{n}{sent}\PY{o}{.}\PY{n}{find}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{if} \PY{n}{position} \PY{o}{!=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{sent}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n}{sent\PYZus{}1} \PY{o}{=} \PY{n}{sent}\PY{p}{[}\PY{p}{:}\PY{n}{position}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}
+            \PY{n}{sent\PYZus{}2} \PY{o}{=} \PY{n}{sent}\PY{p}{[}\PY{n}{position}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}
+            \PY{n}{new\PYZus{}mix}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{sent\PYZus{}1}\PY{p}{)}
+            \PY{n}{new\PYZus{}mix}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{sent\PYZus{}2}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{new\PYZus{}mix}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{sent}\PY{p}{)}
+
+    \PY{n}{mix\PYZus{}sent} \PY{o}{=} \PY{n}{new\PYZus{}mix}
+    
+    \PY{c+c1}{\PYZsh{} Para cada sentença, identificar se ela está em português ou inglês}
+    \PY{n}{port} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{engl} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+    \PY{k}{for} \PY{n}{sent} \PY{o+ow}{in} \PY{n}{mix\PYZus{}sent}\PY{p}{:}
+        \PY{k}{try}\PY{p}{:}
+            \PY{k}{if} \PY{n}{detect} \PY{p}{(}\PY{n}{sent}\PY{p}{)} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+                \PY{n}{port}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{sent}\PY{p}{)}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{engl}\PY{o}{.}\PY{n}{append} \PY{p}{(}\PY{n}{sent}\PY{p}{)}
+        \PY{k}{except}\PY{p}{:}
+            \PY{k}{pass}
+    
+    \PY{c+c1}{\PYZsh{} As sentenças são unidas novamente}
+    \PY{n}{port} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{port}\PY{p}{)}
+    \PY{n}{engl} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{engl}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} A função retorna os resumos em cada idioma}
+    \PY{k}{return}\PY{p}{(}\PY{n}{port}\PY{p}{,} \PY{n}{engl}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Separando português e inglês para teses petróleo}
+\PY{n}{columns\PYZus{}pt} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{separacao\PYZus{}port\PYZus{}engl}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{columns\PYZus{}en} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{separacao\PYZus{}port\PYZus{}engl}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{columns\PYZus{}pt}
+\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo inglês 2:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{columns\PYZus{}en}
+
+\PY{c+c1}{\PYZsh{} Separando português e inglês para teses das demais áreas}
+\PY{n}{columns\PYZus{}pt} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{separacao\PYZus{}port\PYZus{}engl}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{columns\PYZus{}en} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{separacao\PYZus{}port\PYZus{}engl}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{columns\PYZus{}pt}
+\PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo inglês 2:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{columns\PYZus{}en}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Excluindo novamente as teses sem resumo em portugues
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{teses\PYZus{}petroleo} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{p}{(}\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{notnull}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\PY{n}{teses\PYZus{}areas} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{p}{(}\PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{notnull}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Preprocessando o texto e retirando stopwords
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Letras em minúsculas}
+\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}
+\PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Preprocessando os textos}
+\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+                                       \PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{gensim}\PY{o}{.}\PY{n}{utils}\PY{o}{.}\PY{n}{simple\PYZus{}preprocess}\PY{p}{)}
+                                       \PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+                                    \PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{gensim}\PY{o}{.}\PY{n}{utils}\PY{o}{.}\PY{n}{simple\PYZus{}preprocess}\PY{p}{)}
+                                    \PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Importando as bibliotecas de stopwords}
+\PY{n}{nltk}\PY{o}{.}\PY{n}{download}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stopwords}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Mapeando stopwords com NLTK}
+\PY{n}{stopwordsIngles} \PY{o}{=} \PY{n}{stopwords}\PY{o}{.}\PY{n}{words}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{portuguese}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{remove\PYZus{}stopwords}\PY{p}{(}\PY{n}{abstract}\PY{p}{)}\PY{p}{:}
+    \PY{n}{without\PYZus{}stopwords} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{abstract}\PY{p}{:}
+        \PY{k}{if} \PY{n}{word} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{stopwordsIngles}\PY{p}{:}
+            \PY{n}{without\PYZus{}stopwords}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{word}\PY{p}{)}
+    \PY{k}{return}\PY{p}{(}\PY{n}{without\PYZus{}stopwords}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{} Excluindo stopwords}
+\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{remove\PYZus{}stopwords}\PY{p}{)}
+\PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{remove\PYZus{}stopwords}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Unindo novamente o texto em uma única string}
+\PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[nltk\_data] Error loading stopwords: <urlopen error [WinError 10053]
+[nltk\_data]     Uma conexão estabelecida foi anulada pelo software no
+[nltk\_data]     computador host>
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Gravando textos preprocessados em um arquivo JSON}
+\PY{c+c1}{\PYZsh{}teses\PYZus{}petroleo.to\PYZus{}json(\PYZsq{}BDTD/tese\PYZus{}petroleo\PYZus{}processada.json\PYZsq{}, orient = \PYZsq{}index\PYZsq{})}
+\PY{c+c1}{\PYZsh{}teses\PYZus{}areas.to\PYZus{}json(\PYZsq{}BDTD/tese\PYZus{}areas\PYZus{}processada.json\PYZsq{}, orient = \PYZsq{}index\PYZsq{})}
+\PY{c+c1}{\PYZsh{} lendo textos preprocessados de arquivos JSON}
+\PY{n}{teses\PYZus{}petroleo} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}json}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BDTD/tese\PYZus{}petroleo\PYZus{}processada.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{orient} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{teses\PYZus{}areas} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}json}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BDTD/tese\PYZus{}areas\PYZus{}processada.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{orient} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{dividindo-o-conjunto-de-treino-validauxe7uxe3o-e-de-teste}{%
+\subsection{Dividindo o conjunto de treino, validação e de
+teste}\label{dividindo-o-conjunto-de-treino-validauxe7uxe3o-e-de-teste}}
+
+Vamos dividir os dados em 80\% treino e 20\% teste
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Função que recebe um dataframe com as teses e retorna dois dataframes com dados de treino e teste.}
+\PY{c+c1}{\PYZsh{}\PYZsq{}train\PYZsq{} é a fração dos dados para treino, o restante é para teste}
+\PY{k}{def} \PY{n+nf}{train\PYZus{}test}\PY{p}{(}\PY{n}{teses}\PY{p}{,} \PY{n}{train}\PY{p}{)}\PY{p}{:}
+    \PY{n}{corte\PYZus{}train} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{teses}\PY{p}{)}\PY{o}{*}\PY{n}{train}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}
+    \PY{n}{teses} \PY{o}{=} \PY{n}{teses}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n}{frac}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{teses\PYZus{}train} \PY{o}{=} \PY{n}{teses}\PY{p}{[}\PY{p}{:}\PY{n}{corte\PYZus{}train}\PY{p}{]}
+    \PY{n}{teses\PYZus{}test} \PY{o}{=} \PY{n}{teses}\PY{p}{[}\PY{n}{corte\PYZus{}train}\PY{p}{:}\PY{p}{]}
+    \PY{k}{return}\PY{p}{(}\PY{n}{teses\PYZus{}train}\PY{p}{,} \PY{n}{teses\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Os documentos são balanceados para ficarem com a mesma quantidades}
+\PY{n}{teses\PYZus{}areas} \PY{o}{=} \PY{n}{teses\PYZus{}areas}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{teses\PYZus{}petroleo}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{teses\PYZus{}areas}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{teses\PYZus{}petroleo}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2121
+2121
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} São separadas as frações para treino e teste}
+\PY{n}{teses\PYZus{}petroleo\PYZus{}train}\PY{p}{,} \PY{n}{teses\PYZus{}petroleo\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test}\PY{p}{(}\PY{n}{teses\PYZus{}petroleo}\PY{p}{,} \PY{l+m+mf}{0.8}\PY{p}{)}
+\PY{n}{teses\PYZus{}areas\PYZus{}train}\PY{p}{,} \PY{n}{teses\PYZus{}areas\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test}\PY{p}{(}\PY{n}{teses\PYZus{}areas}\PY{p}{,} \PY{l+m+mf}{0.8}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Os dados de treino e teste são unindos e embaralhados}
+\PY{c+c1}{\PYZsh{} Train}
+\PY{n}{tese\PYZus{}train} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo\PYZus{}train}
+\PY{n}{tese\PYZus{}train} \PY{o}{=} \PY{n}{tese\PYZus{}train}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{teses\PYZus{}areas\PYZus{}train}\PY{p}{)}
+\PY{n}{tese\PYZus{}train} \PY{o}{=} \PY{n}{tese\PYZus{}train}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n}{frac}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{drop}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Test}
+\PY{n}{tese\PYZus{}test} \PY{o}{=} \PY{n}{teses\PYZus{}petroleo\PYZus{}test}
+\PY{n}{tese\PYZus{}test} \PY{o}{=} \PY{n}{tese\PYZus{}test}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{teses\PYZus{}areas\PYZus{}test}\PY{p}{)}
+\PY{n}{tese\PYZus{}test} \PY{o}{=} \PY{n}{tese\PYZus{}test}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n}{frac}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{drop}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Separando apenas os texto e classes para treinar os classificadores}
+\PY{n}{train\PYZus{}x} \PY{o}{=} \PY{n}{tese\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{train\PYZus{}y} \PY{o}{=} \PY{n}{tese\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{classe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{test\PYZus{}x} \PY{o}{=} \PY{n}{tese\PYZus{}test}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{test\PYZus{}y} \PY{o}{=} \PY{n}{tese\PYZus{}test}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{classe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Codigficando as classes para as variáveis 0 e 1 }
+\PY{n}{encoder} \PY{o}{=} \PY{n}{preprocessing}\PY{o}{.}\PY{n}{LabelEncoder}\PY{p}{(}\PY{p}{)}
+\PY{n}{train\PYZus{}y} \PY{o}{=} \PY{n}{encoder}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{train\PYZus{}y}\PY{p}{)}
+\PY{n}{test\PYZus{}y}  \PY{o}{=} \PY{n}{encoder}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{test\PYZus{}y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Petrobras = }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{encoder}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Petroleo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Outro = }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{encoder}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Todas Areas}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Petrobras =  0
+Outro =  1
+\end{Verbatim}
+
+    \hypertarget{feature-engineering}{%
+\section{Feature Engineering}\label{feature-engineering}}
+
+    O próximo passo é criar os atributos dos textos. Nesta etapa o texto
+bruto será transformado em vetores e novos atributos serão criados a
+partir dos dados atuais.
+
+    \textbf{Count Vectors}\\
+Count Vector é uma notação de matriz, onde cada linha representa um
+documento, cada coluna representa um termo do corpus, e cada celula
+representa a frequência de um determinado termo em um documento em
+particular.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Criando um objeto Count Vector }
+\PY{n}{count\PYZus{}vect} \PY{o}{=} \PY{n}{CountVectorizer}\PY{p}{(}\PY{n}{analyzer}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{word}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{token\PYZus{}pattern}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{1,\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{count\PYZus{}vect}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{tese\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Trasnsforma os dados de treino e teste usando o objeto Count Vector}
+\PY{n}{xtrain\PYZus{}count} \PY{o}{=}  \PY{n}{count\PYZus{}vect}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{)}
+\PY{n}{xtest\PYZus{}count} \PY{o}{=}  \PY{n}{count\PYZus{}vect}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{TF-IDF Vectors}
+
+TF-IDF score representa a importância relativa dos termos em um
+documento e no corpus inteiro. TF-IDF score é composto por:
+
+TF(t) = (Número de vezes que o termo t aparece em um documento) /
+(Número total de termos em um documento) IDF(t) = log\_e(Número total de
+documentos / Número de documentos que contém o termo t)
+
+Os vetores TF-IDF podem ser gerados com diferentes níveis de tokens
+(palavrass, ccaracteres, n-grams)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} word level tf\PYZhy{}idf}
+\PY{n}{tfidf\PYZus{}vect} \PY{o}{=} \PY{n}{TfidfVectorizer}\PY{p}{(}\PY{n}{analyzer}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{word}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{token\PYZus{}pattern}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{1,\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{max\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{5000}\PY{p}{)}
+\PY{n}{tfidf\PYZus{}vect}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{tese\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{xtrain\PYZus{}tfidf} \PY{o}{=}  \PY{n}{tfidf\PYZus{}vect}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{)}
+\PY{n}{xtest\PYZus{}tfidf} \PY{o}{=}  \PY{n}{tfidf\PYZus{}vect}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} ngram level tf\PYZhy{}idf }
+\PY{n}{tfidf\PYZus{}vect\PYZus{}ngram} \PY{o}{=} \PY{n}{TfidfVectorizer}\PY{p}{(}\PY{n}{analyzer}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{word}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{token\PYZus{}pattern}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{1,\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ngram\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{max\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{5000}\PY{p}{)}
+\PY{n}{tfidf\PYZus{}vect\PYZus{}ngram}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{tese\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram} \PY{o}{=}  \PY{n}{tfidf\PYZus{}vect\PYZus{}ngram}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{)}
+\PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram} \PY{o}{=}  \PY{n}{tfidf\PYZus{}vect\PYZus{}ngram}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} characters level tf\PYZhy{}idf}
+\PY{n}{tfidf\PYZus{}vect\PYZus{}ngram\PYZus{}chars} \PY{o}{=} \PY{n}{TfidfVectorizer}\PY{p}{(}\PY{n}{analyzer}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{char}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{token\PYZus{}pattern}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{1,\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ngram\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{max\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{5000}\PY{p}{)}
+\PY{n}{tfidf\PYZus{}vect\PYZus{}ngram\PYZus{}chars}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{tese\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars} \PY{o}{=}  \PY{n}{tfidf\PYZus{}vect\PYZus{}ngram\PYZus{}chars}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{)} 
+\PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars} \PY{o}{=}  \PY{n}{tfidf\PYZus{}vect\PYZus{}ngram\PYZus{}chars}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{)} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Word Embeddings}
+
+Word embeddings é uma forma de representação de palavras e documentos
+usando uma vetores. A posição das palavras em um espaço vetorial é
+aprendido do texto e é baseados nas palavras que o rodeiam. Word
+embeddings podem ser treinados usando como input o próprio corpus ou
+pode ser gerado usando modelos pré treinados como Glove, FastText ou
+Word2Vec.
+
+    \textbf{implementando word2vec}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} unindo todos os textos}
+\PY{n}{corpus} \PY{o}{=} \PY{n}{todos}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Resumo Português:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{corpus} \PY{o}{=} \PY{n}{corpus}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{cat}\PY{p}{(}\PY{n}{sep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Criando uma lista de sentenças e embaralhando\PYZhy{}as}
+\PY{n}{corpus} \PY{o}{=} \PY{n}{nltk}\PY{o}{.}\PY{n}{sent\PYZus{}tokenize}\PY{p}{(}\PY{n}{corpus}\PY{p}{)} 
+\PY{n}{shuffle}\PY{p}{(}\PY{n}{corpus}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Tokenizando as sentenças}
+\PY{n}{corpus\PYZus{}processado} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{sentence} \PY{o+ow}{in} \PY{n}{corpus}\PY{p}{:}
+    \PY{n}{corpus\PYZus{}processado}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{word\PYZus{}tokenize}\PY{p}{(}\PY{n}{sentence}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Treinando um modelo de Word2Vec}
+\PY{n}{BDTD\PYZus{}word2vec\PYZus{}50} \PY{o}{=} \PY{n}{Word2Vec}\PY{p}{(}\PY{n}{corpus\PYZus{}processado}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{window}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{min\PYZus{}count}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{workers}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n+nb}{iter}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Exemplo do vetor da palavra água}
+\PY{n}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{o}{.}\PY{n}{wv}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{água}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{33}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([-3.6960294e+00, -1.3259159e+00, -2.2412670e+00,  5.7865171e+00,
+        2.2329526e+00, -5.5173335e+00, -5.9714718e+00,  7.3408980e+00,
+        3.9766235e+00, -4.5603027e+00,  4.6718297e+00, -2.3560665e+00,
+       -6.8443626e-01, -6.0587273e+00,  3.6310940e+00, -1.5324932e+01,
+        2.0639896e+00,  6.0305029e-01,  3.7788615e+00,  4.0281076e+00,
+        3.9048851e+00,  1.1163657e+00,  2.3122082e+00,  4.4901333e+00,
+       -3.3812339e+00,  2.3412783e+00, -5.2094436e+00, -1.1195867e+00,
+       -3.8026874e+00,  9.2307749e+00, -1.8853464e+00, -6.3019433e+00,
+        3.5904100e+00, -2.6272061e+00, -4.8584223e+00,  7.7866459e+00,
+       -1.3319616e+00,  5.1870914e+00, -5.6637077e+00, -1.5475802e+00,
+        9.2607457e-03, -5.3038816e+00,  3.9777195e+00, -6.1717930e+00,
+       -5.0633631e+00, -1.7807996e+00,  8.1977360e-03, -3.5111365e+00,
+       -5.9699243e-01,  1.4175992e+00], dtype=float32)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Vetores mais similares a palavra água}
+\PY{n}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n}{similar\PYZus{}by\PYZus{}word}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{água}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{34}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+[('vazão', 0.730722188949585),
+ ('solo', 0.6993394494056702),
+ ('líquido', 0.687868058681488),
+ ('ar', 0.6873413920402527),
+ ('areia', 0.6845143437385559),
+ ('argila', 0.6819689869880676),
+ ('umidade', 0.6753614544868469),
+ ('ozônio', 0.67515629529953),
+ ('irrigação', 0.6692394018173218),
+ ('óleo', 0.6592279076576233)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Gravando e lendo os modelos de embeddings}
+\PY{c+c1}{\PYZsh{}BDTD\PYZus{}word2vec\PYZus{}50.save(\PYZdq{}Embeddings\PYZbs{}BDTD\PYZus{}word2vec\PYZus{}50\PYZdq{})}
+\PY{n}{BDTD\PYZus{}word2vec\PYZus{}50} \PY{o}{=} \PY{n}{Word2Vec}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Embeddings}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Indexando as palavras presentes no modelo Word2Vec}
+\PY{n}{word2index} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{k}{for} \PY{n}{index}\PY{p}{,} \PY{n}{word} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n}{index2word}\PY{p}{)}\PY{p}{:}
+    \PY{n}{word2index}\PY{p}{[}\PY{n}{word}\PY{p}{]} \PY{o}{=} \PY{n}{index}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Indexando as palavras presentes no modelo Word2Vec}
+\PY{n}{word2index} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{k}{for} \PY{n}{index}\PY{p}{,} \PY{n}{word} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n}{index2word}\PY{p}{)}\PY{p}{:}
+    \PY{n}{word2index}\PY{p}{[}\PY{n}{word}\PY{p}{]} \PY{o}{=} \PY{n}{index}
+    
+\PY{c+c1}{\PYZsh{} Função para indexar o texto usando os índices do modelo Word2Vec}
+\PY{k}{def} \PY{n+nf}{index\PYZus{}pad\PYZus{}text}\PY{p}{(}\PY{n}{text}\PY{p}{,} \PY{n}{maxlen}\PY{p}{,} \PY{n}{word2index}\PY{p}{)}\PY{p}{:}
+    \PY{n}{maxlen} \PY{o}{=} \PY{l+m+mi}{400}
+    \PY{n}{new\PYZus{}text} \PY{o}{=} \PY{p}{[}\PY{p}{]} 
+    \PY{k}{for} \PY{n}{sent} \PY{o+ow}{in} \PY{n}{text}\PY{p}{:}
+        \PY{n}{temp\PYZus{}sent} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{word\PYZus{}tokenize}\PY{p}{(}\PY{n}{sent}\PY{p}{)}\PY{p}{:}
+            \PY{k}{try}\PY{p}{:}
+                \PY{n}{temp\PYZus{}sent}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{word2index}\PY{p}{[}\PY{n}{word}\PY{p}{]}\PY{p}{)}
+            \PY{k}{except}\PY{p}{:}
+                \PY{k}{pass}
+        \PY{c+c1}{\PYZsh{} Estebelecendo um limite máximo de palavras para cada resumo (padding)}
+        \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{temp\PYZus{}sent}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{n}{maxlen}\PY{p}{:}
+            \PY{n}{temp\PYZus{}sent} \PY{o}{=} \PY{n}{temp\PYZus{}sent}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{400}\PY{p}{]}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{temp\PYZus{}sent} \PY{o}{+}\PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{p}{(}\PY{n}{maxlen} \PY{o}{\PYZhy{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{temp\PYZus{}sent}\PY{p}{)}\PY{p}{)}
+        \PY{n}{new\PYZus{}text}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{temp\PYZus{}sent}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{new\PYZus{}text}\PY{p}{)}
+
+\PY{n}{maxlen} \PY{o}{=} \PY{l+m+mi}{400}
+\PY{n}{train\PYZus{}seq\PYZus{}x} \PY{o}{=} \PY{n}{index\PYZus{}pad\PYZus{}text}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{,} \PY{n}{maxlen}\PY{p}{,} \PY{n}{word2index}\PY{p}{)}
+\PY{n}{test\PYZus{}seq\PYZus{}x} \PY{o}{=} \PY{n}{index\PYZus{}pad\PYZus{}text}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{,} \PY{n}{maxlen}\PY{p}{,} \PY{n}{word2index}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{model-building}{%
+\section{\texorpdfstring{\textbf{Model
+Building}}{Model Building}}\label{model-building}}
+
+A etapa final do framework de classificação de texto é treinar um
+classificador usando os atributos criados anteriormente. Os seguintes
+algoritmos de aprendizado de máquina foram implementados:
+
+\begin{itemize}
+\tightlist
+\item
+  Naive Bayes Classifier
+\item
+  Linear Classifier - Logistic Regression
+\item
+  Support Vector Machine
+\item
+  Bagging Models - Random Forest
+\item
+  Boosting Models - Xtereme Gradient Boosting
+\item
+  Shallow Neural Networks
+\item
+  Deep Neural Networks
+\item
+  Convolutional Neural Network (CNN)
+\item
+  Long Short Term Modelr (LSTM)
+\item
+  Gated Recurrent Unit (GRU)
+\item
+  Bidirectional RNN
+\item
+  Recurrent Convolutional Neural Network (RCNN)
+\item
+  Other Variants of Deep Neural Networks
+\end{itemize}
+
+A função abaixo é usada para treinar os modelos. Ela aceita o
+classificador, o vetor de atributos dos dados de treinamento, as classes
+de treinamento, os atributos dos dados de teste e a informação se o
+classificador é uma rede neural. Com essas informações o modelo é
+treinado, a acurácia pe computada e, nos casos das redes neurais, um
+gráfico das épocas de treinamento é apresentado.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{feature\PYZus{}vector\PYZus{}train}\PY{p}{,} \PY{n}{label}\PY{p}{,} \PY{n}{feature\PYZus{}vector\PYZus{}test}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} fit the training dataset on the classifier}
+    
+    \PY{k}{if} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{p}{:}
+        \PY{n}{callbacks} \PY{o}{=} \PY{n}{EarlyStopping}\PY{p}{(}\PY{n}{monitor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{patience}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{restore\PYZus{}best\PYZus{}weights}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+        \PY{n}{history} \PY{o}{=} \PY{n}{classifier}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{feature\PYZus{}vector\PYZus{}train}\PY{p}{,}
+                                 \PY{n}{label}\PY{p}{,} \PY{c+c1}{\PYZsh{}to\PYZus{}categorical(label),}
+                                 \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{,}
+                                 \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{64}\PY{p}{,}
+                                 \PY{n}{validation\PYZus{}split}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{,}
+                                 \PY{n}{callbacks}\PY{o}{=}\PY{p}{[}\PY{n}{callbacks}\PY{p}{]}\PY{p}{)}
+        
+    \PY{c+c1}{\PYZsh{} plot the loss}
+        \PY{c+c1}{\PYZsh{} list all data in history}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{history}\PY{o}{.}\PY{n}{history}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} summarize history for loss}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{o}{.}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{o}{.}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{model acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+        
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{classifier}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{feature\PYZus{}vector\PYZus{}train}\PY{p}{,} \PY{n}{label}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} predict the labels on validation dataset}
+    \PY{n}{predictions} \PY{o}{=} \PY{n}{classifier}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{feature\PYZus{}vector\PYZus{}test}\PY{p}{)}
+    \PY{n}{predictions} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{rint}\PY{p}{(}\PY{n}{predictions}\PY{p}{)}
+    
+    \PY{n}{num\PYZus{}classes} \PY{o}{=} \PY{l+m+mi}{2}
+    \PY{k}{return} \PY{p}{(}\PY{n}{metrics}\PY{o}{.}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{predictions}\PY{p}{,} \PY{n}{test\PYZus{}y}\PY{p}{)}\PY{p}{,}
+            \PY{n}{tf}\PY{o}{.}\PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{predictions}\PY{p}{,} \PY{n}{test\PYZus{}y}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Naive Bayes}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Naive Bayes on Count Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{naive\PYZus{}bayes}\PY{o}{.}\PY{n}{MultinomialNB}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}count}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}count}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NB, Count Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Naive Bayes on Word Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{naive\PYZus{}bayes}\PY{o}{.}\PY{n}{MultinomialNB}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NB, WordLevel TF\PYZhy{}IDF Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{} Naive Bayes on Ngram Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{naive\PYZus{}bayes}\PY{o}{.}\PY{n}{MultinomialNB}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NB, N\PYZhy{}Gram Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{} Naive Bayes on Character Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{naive\PYZus{}bayes}\PY{o}{.}\PY{n}{MultinomialNB}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NB, CharLevel Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+NB, Count Vectors:  0.7405660377358491
+[[324 120]
+ [100 304]]
+NB, WordLevel TF-IDF Vectors:  0.7275943396226415
+[[336 143]
+ [ 88 281]]
+NB, N-Gram Vectors:  0.8926886792452831
+[[387  54]
+ [ 37 370]]
+NB, CharLevel Vectors:  0.8360849056603774
+[[382  97]
+ [ 42 327]]
+\end{Verbatim}
+
+    \textbf{Linear Classifier - Logistic Regression}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Linear Classifier on Count Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{linear\PYZus{}model}\PY{o}{.}\PY{n}{LogisticRegression}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}count}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}count}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{LR, Count Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Linear Classifier on Word Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{linear\PYZus{}model}\PY{o}{.}\PY{n}{LogisticRegression}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{LR, WordLevel TF\PYZhy{}IDF Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Linear Classifier on Ngram Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{linear\PYZus{}model}\PY{o}{.}\PY{n}{LogisticRegression}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{LR, N\PYZhy{}Gram Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Linear Classifier on Character Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{linear\PYZus{}model}\PY{o}{.}\PY{n}{LogisticRegression}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{LR, CharLevel Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+LR, Count Vectors:  0.7452830188679245
+[[325 117]
+ [ 99 307]]
+LR, WordLevel TF-IDF Vectors:  0.7417452830188679
+[[311 106]
+ [113 318]]
+LR, N-Gram Vectors:  0.9198113207547169
+[[386  30]
+ [ 38 394]]
+LR, CharLevel Vectors:  0.7971698113207547
+[[335  83]
+ [ 89 341]]
+\end{Verbatim}
+
+    \textbf{Support Vector Machine (SVM)}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} SVM on Count Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{svm}\PY{o}{.}\PY{n}{SVC}\PY{p}{(}\PY{n}{gamma}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{scale}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}count}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}count}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SVM, Count Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} SVM on Word Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{svm}\PY{o}{.}\PY{n}{SVC}\PY{p}{(}\PY{n}{gamma}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{scale}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SVM, Word Level TF IDF Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} SVM on Ngram Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{svm}\PY{o}{.}\PY{n}{SVC}\PY{p}{(}\PY{n}{gamma}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{scale}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SVM, Ngram Level TF IDF Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} SVM on Character Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{svm}\PY{o}{.}\PY{n}{SVC}\PY{p}{(}\PY{n}{gamma}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{scale}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SVM, Character Level TF IDFs Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+SVM, Count Vectors:  0.7535377358490566
+[[327 112]
+ [ 97 312]]
+SVM, Word Level TF IDF Vectors:  0.7452830188679245
+[[311 103]
+ [113 321]]
+SVM, Ngram Level TF IDF Vectors:  0.9280660377358491
+[[388  25]
+ [ 36 399]]
+SVM, Character Level TF IDFs Vectors:  0.847877358490566
+[[354  59]
+ [ 70 365]]
+\end{Verbatim}
+
+    \textbf{Bagging Model - Random Forest}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} RF on Count Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{ensemble}\PY{o}{.}\PY{n}{RandomForestClassifier}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}count}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}count}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RF, Count Vectors Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} RF on Word Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{ensemble}\PY{o}{.}\PY{n}{RandomForestClassifier}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RF, WordLevel TF\PYZhy{}IDF Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} RF on Ngram Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{ensemble}\PY{o}{.}\PY{n}{RandomForestClassifier}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RF, Ngram Level TF IDF Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} RF on Character Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{ensemble}\PY{o}{.}\PY{n}{RandomForestClassifier}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RF, Character Level TF IDFs Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+RF, Count Vectors Vectors:  0.6898584905660378
+[[327 166]
+ [ 97 258]]
+RF, WordLevel TF-IDF Vectors:  0.7004716981132075
+[[330 160]
+ [ 94 264]]
+RF, Ngram Level TF IDF Vectors:  0.8561320754716981
+[[378  76]
+ [ 46 348]]
+RF, Character Level TF IDFs Vectors:  0.8042452830188679
+[[360 102]
+ [ 64 322]]
+\end{Verbatim}
+
+    \textbf{Boosting Model - Xtereme Gradient Boosting}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Extereme Gradient Boosting on Count Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{xgboost}\PY{o}{.}\PY{n}{XGBClassifier}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}count}\PY{o}{.}\PY{n}{tocsc}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}count}\PY{o}{.}\PY{n}{tocsc}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Xgb, Count Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Extereme Gradient Boosting on Word Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{xgboost}\PY{o}{.}\PY{n}{XGBClassifier}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf}\PY{o}{.}\PY{n}{tocsc}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf}\PY{o}{.}\PY{n}{tocsc}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Xgb, WordLevel TF\PYZhy{}IDF: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Extereme Gradient Boosting on Ngram Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{xgboost}\PY{o}{.}\PY{n}{XGBClassifier}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram}\PY{o}{.}\PY{n}{tocsc}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram}\PY{o}{.}\PY{n}{tocsc}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Xgb, Ngram Level Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Extereme Gradient Boosting on Character Level TF IDF Vectors}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{xgboost}\PY{o}{.}\PY{n}{XGBClassifier}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{o}{.}\PY{n}{tocsc}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{o}{.}\PY{n}{tocsc}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Xgb, CharLevel Vectors: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Xgb, Count Vectors:  0.7358490566037735
+[[318 118]
+ [106 306]]
+Xgb, WordLevel TF-IDF:  0.7476415094339622
+[[311 101]
+ [113 323]]
+Xgb, Ngram Level Vectors:  0.9221698113207547
+[[373  15]
+ [ 51 409]]
+Xgb, CharLevel Vectors:  0.8867924528301887
+[[363  35]
+ [ 61 389]]
+\end{Verbatim}
+
+    \textbf{Redes neurais rasa - Mullti Layer Perceptron}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Função para criar a arquitetura da rede neural}
+\PY{k}{def} \PY{n+nf}{create\PYZus{}model\PYZus{}architecture}\PY{p}{(}\PY{n}{input\PYZus{}size}\PY{p}{)}\PY{p}{:}
+    \PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} create hidden layer}
+    \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,}
+                           \PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{n}{input\PYZus{}size}\PY{p}{,} \PY{p}{)}\PY{p}{,}
+                           \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sigmoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+       
+    \PY{c+c1}{\PYZsh{} create output layer}
+    \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sigmoid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)} 
+    
+    \PY{n}{opt} \PY{o}{=} \PY{n}{optimizers}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{p}{)}
+    \PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{optimizer}\PY{o}{=}\PY{n}{opt}\PY{p}{,} \PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary\PYZus{}crossentropy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{metrics}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{model} 
+
+\PY{n}{num\PYZus{}classes} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{c+c1}{\PYZsh{} Shallow Neural Network on Count Vectors Vectors}
+\PY{n}{classifier} \PY{o}{=} \PY{n}{create\PYZus{}model\PYZus{}architecture}\PY{p}{(}\PY{n}{xtrain\PYZus{}count}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{xtrain\PYZus{}count}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}count}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Shallow Neural Network on Count Vectors Vectors}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Shallow Neural Network on Word Level TF IDF Vectors}
+\PY{n}{classifier} \PY{o}{=} \PY{n}{create\PYZus{}model\PYZus{}architecture}\PY{p}{(}\PY{n}{xtrain\PYZus{}tfidf}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Shallow Neural Network on Word Level TF IDF Vectors}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{accuracy}\PY{p}{,}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Shallow Neural Network on Ngram Level TF IDF Vectors}
+\PY{n}{classifier} \PY{o}{=} \PY{n}{create\PYZus{}model\PYZus{}architecture}\PY{p}{(}\PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Shallow Neural Network on Ngram Level TF IDF Vectors}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Shallow Neural Network on Character Level TF IDF Vectors}
+\PY{n}{classifier} \PY{o}{=} \PY{n}{create\PYZus{}model\PYZus{}architecture}\PY{p}{(}\PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{xtrain\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{xtest\PYZus{}tfidf\PYZus{}ngram\PYZus{}chars}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Shallow Neural Network on Character Level TF IDF Vectors}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:From C:\textbackslash{}ProgramData\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}keras\textbackslash{}backend\textbackslash{}tensorflow\_backend.py:74: The name tf.get\_default\_graph
+is deprecated. Please use tf.compat.v1.get\_default\_graph instead.
+
+WARNING:tensorflow:From C:\textbackslash{}ProgramData\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}keras\textbackslash{}backend\textbackslash{}tensorflow\_backend.py:517: The name tf.placeholder is
+deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From C:\textbackslash{}ProgramData\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}keras\textbackslash{}backend\textbackslash{}tensorflow\_backend.py:4138: The name tf.random\_uniform is
+deprecated. Please use tf.random.uniform instead.
+
+WARNING:tensorflow:From C:\textbackslash{}ProgramData\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}keras\textbackslash{}optimizers.py:790: The name tf.train.Optimizer is deprecated.
+Please use tf.compat.v1.train.Optimizer instead.
+
+WARNING:tensorflow:From C:\textbackslash{}ProgramData\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}keras\textbackslash{}backend\textbackslash{}tensorflow\_backend.py:3376: The name tf.log is
+deprecated. Please use tf.math.log instead.
+
+WARNING:tensorflow:From C:\textbackslash{}ProgramData\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}tensorflow\textbackslash{}python\textbackslash{}ops\textbackslash{}nn\_impl.py:180:
+add\_dispatch\_support.<locals>.wrapper (from tensorflow.python.ops.array\_ops) is
+deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From C:\textbackslash{}ProgramData\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}keras\textbackslash{}backend\textbackslash{}tensorflow\_backend.py:986: The name tf.assign\_add is
+deprecated. Please use tf.compat.v1.assign\_add instead.
+
+Train on 2545 samples, validate on 849 samples
+Epoch 1/1000
+2545/2545 [==============================] - 0s 148us/step - loss: 0.6952 - acc:
+0.5870 - val\_loss: 0.6529 - val\_acc: 0.6243
+Epoch 2/1000
+2545/2545 [==============================] - 0s 28us/step - loss: 0.6155 - acc:
+0.7069 - val\_loss: 0.6224 - val\_acc: 0.6690
+Epoch 3/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.5824 - acc:
+0.7194 - val\_loss: 0.5984 - val\_acc: 0.6808
+Epoch 4/1000
+2545/2545 [==============================] - 0s 28us/step - loss: 0.5555 - acc:
+0.7336 - val\_loss: 0.5789 - val\_acc: 0.7126
+Epoch 5/1000
+2545/2545 [==============================] - 0s 28us/step - loss: 0.5401 - acc:
+0.7466 - val\_loss: 0.5663 - val\_acc: 0.7126
+Epoch 6/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.5300 - acc:
+0.7509 - val\_loss: 0.5626 - val\_acc: 0.7150
+Epoch 7/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.5184 - acc:
+0.7501 - val\_loss: 0.5548 - val\_acc: 0.7161
+Epoch 8/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.5174 - acc:
+0.7580 - val\_loss: 0.5554 - val\_acc: 0.7114
+Epoch 9/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.5077 - acc:
+0.7544 - val\_loss: 0.5647 - val\_acc: 0.7150
+Epoch 10/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.5081 - acc:
+0.7544 - val\_loss: 0.5434 - val\_acc: 0.7291
+Epoch 11/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.5028 - acc:
+0.7568 - val\_loss: 0.5527 - val\_acc: 0.7114
+Epoch 12/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.4994 - acc:
+0.7591 - val\_loss: 0.5409 - val\_acc: 0.7173
+Epoch 13/1000
+2545/2545 [==============================] - 0s 44us/step - loss: 0.4990 - acc:
+0.7564 - val\_loss: 0.5431 - val\_acc: 0.7244
+Epoch 14/1000
+2545/2545 [==============================] - 0s 35us/step - loss: 0.4940 - acc:
+0.7627 - val\_loss: 0.5485 - val\_acc: 0.7220
+Epoch 15/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.4888 - acc:
+0.7646 - val\_loss: 0.5789 - val\_acc: 0.6938
+Epoch 16/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.4972 - acc:
+0.7599 - val\_loss: 0.5382 - val\_acc: 0.7314
+Epoch 17/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.4876 - acc:
+0.7705 - val\_loss: 0.5525 - val\_acc: 0.7244
+Epoch 18/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.4844 - acc:
+0.7627 - val\_loss: 0.5446 - val\_acc: 0.7173
+Epoch 19/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.4908 - acc:
+0.7611 - val\_loss: 0.5460 - val\_acc: 0.7208
+Epoch 20/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.4847 - acc:
+0.7749 - val\_loss: 0.5410 - val\_acc: 0.7244
+Epoch 21/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.4852 - acc:
+0.7737 - val\_loss: 0.5456 - val\_acc: 0.7161
+Epoch 22/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.4815 - acc:
+0.7646 - val\_loss: 0.5382 - val\_acc: 0.7279
+Epoch 23/1000
+2545/2545 [==============================] - 0s 28us/step - loss: 0.4730 - acc:
+0.7784 - val\_loss: 0.5426 - val\_acc: 0.7232
+Epoch 24/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.4725 - acc:
+0.7697 - val\_loss: 0.5552 - val\_acc: 0.7208
+Epoch 25/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.4695 - acc:
+0.7796 - val\_loss: 0.5386 - val\_acc: 0.7232
+Epoch 26/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.4656 - acc:
+0.7745 - val\_loss: 0.5443 - val\_acc: 0.7197
+dict\_keys(['val\_loss', 'val\_acc', 'loss', 'acc'])
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_66_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Shallow Neural Network on Count Vectors Vectors 0.7665094339622641
+[[327 101]
+ [ 97 323]]
+Train on 2545 samples, validate on 849 samples
+Epoch 1/1000
+2545/2545 [==============================] - 0s 173us/step - loss: 0.7288 - acc:
+0.5081 - val\_loss: 0.6950 - val\_acc: 0.4947
+Epoch 2/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6938 - acc:
+0.4994 - val\_loss: 0.6914 - val\_acc: 0.5053
+Epoch 3/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6907 - acc:
+0.5305 - val\_loss: 0.6900 - val\_acc: 0.5135
+Epoch 4/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6892 - acc:
+0.5438 - val\_loss: 0.6882 - val\_acc: 0.5512
+Epoch 5/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6879 - acc:
+0.6000 - val\_loss: 0.6865 - val\_acc: 0.5760
+Epoch 6/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6856 - acc:
+0.5466 - val\_loss: 0.6900 - val\_acc: 0.5006
+Epoch 7/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6847 - acc:
+0.6259 - val\_loss: 0.6831 - val\_acc: 0.6007
+Epoch 8/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6816 - acc:
+0.5725 - val\_loss: 0.6813 - val\_acc: 0.6090
+Epoch 9/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6803 - acc:
+0.5953 - val\_loss: 0.6797 - val\_acc: 0.5795
+Epoch 10/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6770 - acc:
+0.6314 - val\_loss: 0.6777 - val\_acc: 0.6113
+Epoch 11/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6757 - acc:
+0.6373 - val\_loss: 0.6764 - val\_acc: 0.5642
+Epoch 12/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6744 - acc:
+0.6244 - val\_loss: 0.6745 - val\_acc: 0.5736
+Epoch 13/1000
+2545/2545 [==============================] - 0s 35us/step - loss: 0.6694 - acc:
+0.6739 - val\_loss: 0.6716 - val\_acc: 0.6243
+Epoch 14/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6685 - acc:
+0.6723 - val\_loss: 0.6689 - val\_acc: 0.6702
+Epoch 15/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6659 - acc:
+0.7253 - val\_loss: 0.6662 - val\_acc: 0.7291
+Epoch 16/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6631 - acc:
+0.6963 - val\_loss: 0.6638 - val\_acc: 0.7150
+Epoch 17/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6601 - acc:
+0.7273 - val\_loss: 0.6615 - val\_acc: 0.6961
+Epoch 18/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6579 - acc:
+0.7136 - val\_loss: 0.6587 - val\_acc: 0.7303
+Epoch 19/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6556 - acc:
+0.6967 - val\_loss: 0.6575 - val\_acc: 0.6620
+Epoch 20/1000
+2545/2545 [==============================] - 0s 33us/step - loss: 0.6523 - acc:
+0.6990 - val\_loss: 0.6538 - val\_acc: 0.6973
+Epoch 21/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6490 - acc:
+0.7281 - val\_loss: 0.6505 - val\_acc: 0.7267
+Epoch 22/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6464 - acc:
+0.7175 - val\_loss: 0.6474 - val\_acc: 0.7267
+Epoch 23/1000
+2545/2545 [==============================] - 0s 30us/step - loss: 0.6424 - acc:
+0.7147 - val\_loss: 0.6478 - val\_acc: 0.6443
+Epoch 24/1000
+2545/2545 [==============================] - 0s 33us/step - loss: 0.6402 - acc:
+0.6833 - val\_loss: 0.6427 - val\_acc: 0.6867
+Epoch 25/1000
+2545/2545 [==============================] - 0s 35us/step - loss: 0.6366 - acc:
+0.7120 - val\_loss: 0.6426 - val\_acc: 0.6443
+Epoch 26/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6329 - acc:
+0.7124 - val\_loss: 0.6355 - val\_acc: 0.7244
+Epoch 27/1000
+2545/2545 [==============================] - 0s 31us/step - loss: 0.6293 - acc:
+0.7265 - val\_loss: 0.6368 - val\_acc: 0.6667
+Epoch 28/1000
+2545/2545 [==============================] - 0s 33us/step - loss: 0.6285 - acc:
+0.7218 - val\_loss: 0.6291 - val\_acc: 0.7291
+dict\_keys(['val\_loss', 'val\_acc', 'loss', 'acc'])
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_66_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Shallow Neural Network on Word Level TF IDF Vectors 0.7346698113207547
+[[295  96]
+ [129 328]]
+Train on 2545 samples, validate on 849 samples
+Epoch 1/1000
+2545/2545 [==============================] - 1s 376us/step - loss: 0.7182 - acc:
+0.5399 - val\_loss: 0.6487 - val\_acc: 0.7597
+Epoch 2/1000
+2545/2545 [==============================] - 1s 240us/step - loss: 0.6178 - acc:
+0.8538 - val\_loss: 0.5985 - val\_acc: 0.8610
+Epoch 3/1000
+2545/2545 [==============================] - 1s 214us/step - loss: 0.5622 - acc:
+0.8719 - val\_loss: 0.5508 - val\_acc: 0.8575
+Epoch 4/1000
+2545/2545 [==============================] - 1s 220us/step - loss: 0.5073 - acc:
+0.8888 - val\_loss: 0.5036 - val\_acc: 0.8657
+Epoch 5/1000
+2545/2545 [==============================] - 1s 222us/step - loss: 0.4551 - acc:
+0.8916 - val\_loss: 0.4610 - val\_acc: 0.8704
+Epoch 6/1000
+2545/2545 [==============================] - 1s 226us/step - loss: 0.4080 - acc:
+0.8994 - val\_loss: 0.4213 - val\_acc: 0.8645
+Epoch 7/1000
+2545/2545 [==============================] - 1s 223us/step - loss: 0.3651 - acc:
+0.9073 - val\_loss: 0.3900 - val\_acc: 0.8716
+Epoch 8/1000
+2545/2545 [==============================] - 1s 244us/step - loss: 0.3300 - acc:
+0.9081 - val\_loss: 0.3640 - val\_acc: 0.8751
+Epoch 9/1000
+2545/2545 [==============================] - 1s 229us/step - loss: 0.3016 - acc:
+0.9132 - val\_loss: 0.3436 - val\_acc: 0.8799
+Epoch 10/1000
+2545/2545 [==============================] - 1s 233us/step - loss: 0.2767 - acc:
+0.9179 - val\_loss: 0.3244 - val\_acc: 0.8787
+Epoch 11/1000
+2545/2545 [==============================] - 1s 222us/step - loss: 0.2548 - acc:
+0.9222 - val\_loss: 0.3105 - val\_acc: 0.8799
+Epoch 12/1000
+2545/2545 [==============================] - 1s 236us/step - loss: 0.2364 - acc:
+0.9293 - val\_loss: 0.3007 - val\_acc: 0.8893
+Epoch 13/1000
+2545/2545 [==============================] - 1s 229us/step - loss: 0.2209 - acc:
+0.9344 - val\_loss: 0.3008 - val\_acc: 0.8928
+Epoch 14/1000
+2545/2545 [==============================] - 1s 233us/step - loss: 0.2067 - acc:
+0.9415 - val\_loss: 0.2823 - val\_acc: 0.8940
+Epoch 15/1000
+2545/2545 [==============================] - 1s 231us/step - loss: 0.1939 - acc:
+0.9470 - val\_loss: 0.2758 - val\_acc: 0.8905
+Epoch 16/1000
+2545/2545 [==============================] - 1s 237us/step - loss: 0.1822 - acc:
+0.9481 - val\_loss: 0.2714 - val\_acc: 0.8999
+Epoch 17/1000
+2545/2545 [==============================] - 1s 229us/step - loss: 0.1716 - acc:
+0.9544 - val\_loss: 0.2672 - val\_acc: 0.8999
+Epoch 18/1000
+2545/2545 [==============================] - 1s 220us/step - loss: 0.1612 - acc:
+0.9576 - val\_loss: 0.2624 - val\_acc: 0.8999
+Epoch 19/1000
+2545/2545 [==============================] - 1s 220us/step - loss: 0.1519 - acc:
+0.9572 - val\_loss: 0.2656 - val\_acc: 0.8987
+Epoch 20/1000
+2545/2545 [==============================] - 1s 220us/step - loss: 0.1432 - acc:
+0.9607 - val\_loss: 0.2589 - val\_acc: 0.8975
+Epoch 21/1000
+2545/2545 [==============================] - 1s 237us/step - loss: 0.1349 - acc:
+0.9666 - val\_loss: 0.2540 - val\_acc: 0.9011
+Epoch 22/1000
+2545/2545 [==============================] - 1s 229us/step - loss: 0.1282 - acc:
+0.9650 - val\_loss: 0.2570 - val\_acc: 0.8975
+Epoch 23/1000
+2545/2545 [==============================] - 1s 225us/step - loss: 0.1210 - acc:
+0.9717 - val\_loss: 0.2515 - val\_acc: 0.8963
+Epoch 24/1000
+2545/2545 [==============================] - 1s 229us/step - loss: 0.1140 - acc:
+0.9729 - val\_loss: 0.2502 - val\_acc: 0.9022
+Epoch 25/1000
+2545/2545 [==============================] - 1s 231us/step - loss: 0.1079 - acc:
+0.9792 - val\_loss: 0.2532 - val\_acc: 0.8999
+Epoch 26/1000
+2545/2545 [==============================] - 1s 225us/step - loss: 0.1018 - acc:
+0.9804 - val\_loss: 0.2501 - val\_acc: 0.9046
+Epoch 27/1000
+2545/2545 [==============================] - 1s 237us/step - loss: 0.0963 - acc:
+0.9827 - val\_loss: 0.2516 - val\_acc: 0.9011
+Epoch 28/1000
+2545/2545 [==============================] - 1s 226us/step - loss: 0.0915 - acc:
+0.9835 - val\_loss: 0.2496 - val\_acc: 0.9022
+Epoch 29/1000
+2545/2545 [==============================] - 1s 228us/step - loss: 0.0871 - acc:
+0.9843 - val\_loss: 0.2492 - val\_acc: 0.8987
+Epoch 30/1000
+2545/2545 [==============================] - 1s 225us/step - loss: 0.0815 - acc:
+0.9870 - val\_loss: 0.2496 - val\_acc: 0.9022
+Epoch 31/1000
+2545/2545 [==============================] - 1s 259us/step - loss: 0.0767 - acc:
+0.9886 - val\_loss: 0.2512 - val\_acc: 0.9022
+Epoch 32/1000
+2545/2545 [==============================] - 1s 223us/step - loss: 0.0732 - acc:
+0.9886 - val\_loss: 0.2515 - val\_acc: 0.8999
+Epoch 33/1000
+2545/2545 [==============================] - 1s 228us/step - loss: 0.0694 - acc:
+0.9910 - val\_loss: 0.2515 - val\_acc: 0.8963
+Epoch 34/1000
+2545/2545 [==============================] - 1s 251us/step - loss: 0.0657 - acc:
+0.9925 - val\_loss: 0.2523 - val\_acc: 0.8952
+Epoch 35/1000
+2545/2545 [==============================] - 1s 240us/step - loss: 0.0618 - acc:
+0.9937 - val\_loss: 0.2544 - val\_acc: 0.8975
+Epoch 36/1000
+2545/2545 [==============================] - 1s 233us/step - loss: 0.0589 - acc:
+0.9937 - val\_loss: 0.2545 - val\_acc: 0.8975
+dict\_keys(['val\_loss', 'val\_acc', 'loss', 'acc'])
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_66_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Shallow Neural Network on Ngram Level TF IDF Vectors 0.9186320754716981
+[[390  35]
+ [ 34 389]]
+Train on 2545 samples, validate on 849 samples
+Epoch 1/1000
+2545/2545 [==============================] - 1s 285us/step - loss: 0.6898 - acc:
+0.5222 - val\_loss: 0.6841 - val\_acc: 0.6172
+Epoch 2/1000
+2545/2545 [==============================] - 0s 72us/step - loss: 0.6798 - acc:
+0.6872 - val\_loss: 0.6756 - val\_acc: 0.7927
+Epoch 3/1000
+2545/2545 [==============================] - 0s 69us/step - loss: 0.6697 - acc:
+0.8012 - val\_loss: 0.6671 - val\_acc: 0.7998
+Epoch 4/1000
+2545/2545 [==============================] - 0s 74us/step - loss: 0.6600 - acc:
+0.6365 - val\_loss: 0.6617 - val\_acc: 0.5677
+Epoch 5/1000
+2545/2545 [==============================] - 0s 69us/step - loss: 0.6496 - acc:
+0.7690 - val\_loss: 0.6491 - val\_acc: 0.7633
+Epoch 6/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.6398 - acc:
+0.7395 - val\_loss: 0.6427 - val\_acc: 0.6466
+Epoch 7/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.6285 - acc:
+0.7784 - val\_loss: 0.6310 - val\_acc: 0.7185
+Epoch 8/1000
+2545/2545 [==============================] - 0s 72us/step - loss: 0.6158 - acc:
+0.8181 - val\_loss: 0.6185 - val\_acc: 0.7986
+Epoch 9/1000
+2545/2545 [==============================] - 0s 72us/step - loss: 0.6036 - acc:
+0.8193 - val\_loss: 0.6064 - val\_acc: 0.8057
+Epoch 10/1000
+2545/2545 [==============================] - 0s 66us/step - loss: 0.5901 - acc:
+0.8295 - val\_loss: 0.5958 - val\_acc: 0.7727
+Epoch 11/1000
+2545/2545 [==============================] - 0s 68us/step - loss: 0.5768 - acc:
+0.8271 - val\_loss: 0.5826 - val\_acc: 0.8068
+Epoch 12/1000
+2545/2545 [==============================] - 0s 75us/step - loss: 0.5637 - acc:
+0.8220 - val\_loss: 0.5703 - val\_acc: 0.7998
+Epoch 13/1000
+2545/2545 [==============================] - 0s 69us/step - loss: 0.5498 - acc:
+0.8220 - val\_loss: 0.5607 - val\_acc: 0.7927
+Epoch 14/1000
+2545/2545 [==============================] - 0s 69us/step - loss: 0.5350 - acc:
+0.8228 - val\_loss: 0.5499 - val\_acc: 0.7703
+Epoch 15/1000
+2545/2545 [==============================] - 0s 69us/step - loss: 0.5216 - acc:
+0.8322 - val\_loss: 0.5346 - val\_acc: 0.8068
+Epoch 16/1000
+2545/2545 [==============================] - 0s 64us/step - loss: 0.5090 - acc:
+0.8346 - val\_loss: 0.5232 - val\_acc: 0.8104
+Epoch 17/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.4952 - acc:
+0.8354 - val\_loss: 0.5127 - val\_acc: 0.8057
+Epoch 18/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.4830 - acc:
+0.8354 - val\_loss: 0.5027 - val\_acc: 0.8045
+Epoch 19/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.4722 - acc:
+0.8420 - val\_loss: 0.4938 - val\_acc: 0.8104
+Epoch 20/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.4615 - acc:
+0.8401 - val\_loss: 0.4860 - val\_acc: 0.8151
+Epoch 21/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.4498 - acc:
+0.8436 - val\_loss: 0.4759 - val\_acc: 0.8104
+Epoch 22/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.4400 - acc:
+0.8464 - val\_loss: 0.4693 - val\_acc: 0.8104
+Epoch 23/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.4311 - acc:
+0.8479 - val\_loss: 0.4614 - val\_acc: 0.8163
+Epoch 24/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.4239 - acc:
+0.8507 - val\_loss: 0.4544 - val\_acc: 0.8139
+Epoch 25/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.4149 - acc:
+0.8546 - val\_loss: 0.4485 - val\_acc: 0.8198
+Epoch 26/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.4085 - acc:
+0.8515 - val\_loss: 0.4434 - val\_acc: 0.8174
+Epoch 27/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.4000 - acc:
+0.8554 - val\_loss: 0.4374 - val\_acc: 0.8221
+Epoch 28/1000
+2545/2545 [==============================] - 0s 64us/step - loss: 0.3931 - acc:
+0.8582 - val\_loss: 0.4323 - val\_acc: 0.8221
+Epoch 29/1000
+2545/2545 [==============================] - 0s 64us/step - loss: 0.3868 - acc:
+0.8609 - val\_loss: 0.4276 - val\_acc: 0.8233
+Epoch 30/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.3810 - acc:
+0.8593 - val\_loss: 0.4230 - val\_acc: 0.8280
+Epoch 31/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.3752 - acc:
+0.8629 - val\_loss: 0.4189 - val\_acc: 0.8292
+Epoch 32/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.3694 - acc:
+0.8640 - val\_loss: 0.4147 - val\_acc: 0.8292
+Epoch 33/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.3638 - acc:
+0.8668 - val\_loss: 0.4113 - val\_acc: 0.8339
+Epoch 34/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.3590 - acc:
+0.8648 - val\_loss: 0.4074 - val\_acc: 0.8316
+Epoch 35/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.3553 - acc:
+0.8621 - val\_loss: 0.4040 - val\_acc: 0.8351
+Epoch 36/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.3513 - acc:
+0.8629 - val\_loss: 0.4061 - val\_acc: 0.8304
+Epoch 37/1000
+2545/2545 [==============================] - 0s 82us/step - loss: 0.3450 - acc:
+0.8672 - val\_loss: 0.3993 - val\_acc: 0.8339
+Epoch 38/1000
+2545/2545 [==============================] - 0s 68us/step - loss: 0.3424 - acc:
+0.8668 - val\_loss: 0.3953 - val\_acc: 0.8245
+Epoch 39/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.3365 - acc:
+0.8692 - val\_loss: 0.3925 - val\_acc: 0.8245
+Epoch 40/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.3331 - acc:
+0.8770 - val\_loss: 0.3924 - val\_acc: 0.8339
+Epoch 41/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.3300 - acc:
+0.8699 - val\_loss: 0.3891 - val\_acc: 0.8257
+Epoch 42/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.3260 - acc:
+0.8766 - val\_loss: 0.3844 - val\_acc: 0.8363
+Epoch 43/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.3212 - acc:
+0.8770 - val\_loss: 0.3821 - val\_acc: 0.8375
+Epoch 44/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.3189 - acc:
+0.8782 - val\_loss: 0.3802 - val\_acc: 0.8316
+Epoch 45/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.3145 - acc:
+0.8806 - val\_loss: 0.3785 - val\_acc: 0.8363
+Epoch 46/1000
+2545/2545 [==============================] - 0s 66us/step - loss: 0.3113 - acc:
+0.8841 - val\_loss: 0.3770 - val\_acc: 0.8363
+Epoch 47/1000
+2545/2545 [==============================] - 0s 66us/step - loss: 0.3079 - acc:
+0.8861 - val\_loss: 0.3736 - val\_acc: 0.8410
+Epoch 48/1000
+2545/2545 [==============================] - 0s 69us/step - loss: 0.3049 - acc:
+0.8841 - val\_loss: 0.3722 - val\_acc: 0.8386
+Epoch 49/1000
+2545/2545 [==============================] - 0s 68us/step - loss: 0.3024 - acc:
+0.8861 - val\_loss: 0.3698 - val\_acc: 0.8422
+Epoch 50/1000
+2545/2545 [==============================] - 0s 68us/step - loss: 0.2997 - acc:
+0.8868 - val\_loss: 0.3681 - val\_acc: 0.8422
+Epoch 51/1000
+2545/2545 [==============================] - 0s 66us/step - loss: 0.2968 - acc:
+0.8876 - val\_loss: 0.3663 - val\_acc: 0.8433
+Epoch 52/1000
+2545/2545 [==============================] - 0s 64us/step - loss: 0.2934 - acc:
+0.8908 - val\_loss: 0.3660 - val\_acc: 0.8410
+Epoch 53/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2915 - acc:
+0.8892 - val\_loss: 0.3644 - val\_acc: 0.8433
+Epoch 54/1000
+2545/2545 [==============================] - 0s 64us/step - loss: 0.2884 - acc:
+0.8912 - val\_loss: 0.3636 - val\_acc: 0.8422
+Epoch 55/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2853 - acc:
+0.8959 - val\_loss: 0.3673 - val\_acc: 0.8422
+Epoch 56/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2855 - acc:
+0.8912 - val\_loss: 0.3592 - val\_acc: 0.8492
+Epoch 57/1000
+2545/2545 [==============================] - 0s 64us/step - loss: 0.2833 - acc:
+0.8939 - val\_loss: 0.3703 - val\_acc: 0.8339
+Epoch 58/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2819 - acc:
+0.8943 - val\_loss: 0.3566 - val\_acc: 0.8492
+Epoch 59/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2766 - acc:
+0.8947 - val\_loss: 0.3585 - val\_acc: 0.8481
+Epoch 60/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2748 - acc:
+0.8935 - val\_loss: 0.3578 - val\_acc: 0.8469
+Epoch 61/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2723 - acc:
+0.8967 - val\_loss: 0.3530 - val\_acc: 0.8481
+Epoch 62/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.2696 - acc:
+0.8982 - val\_loss: 0.3575 - val\_acc: 0.8433
+Epoch 63/1000
+2545/2545 [==============================] - 0s 64us/step - loss: 0.2682 - acc:
+0.8978 - val\_loss: 0.3505 - val\_acc: 0.8528
+Epoch 64/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2663 - acc:
+0.9018 - val\_loss: 0.3496 - val\_acc: 0.8539
+Epoch 65/1000
+2545/2545 [==============================] - 0s 64us/step - loss: 0.2636 - acc:
+0.9029 - val\_loss: 0.3487 - val\_acc: 0.8539
+Epoch 66/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2621 - acc:
+0.9053 - val\_loss: 0.3479 - val\_acc: 0.8528
+Epoch 67/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2600 - acc:
+0.9053 - val\_loss: 0.3467 - val\_acc: 0.8598
+Epoch 68/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2585 - acc:
+0.9029 - val\_loss: 0.3476 - val\_acc: 0.8551
+Epoch 69/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2574 - acc:
+0.9037 - val\_loss: 0.3450 - val\_acc: 0.8598
+Epoch 70/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2550 - acc:
+0.9053 - val\_loss: 0.3475 - val\_acc: 0.8575
+Epoch 71/1000
+2545/2545 [==============================] - 0s 64us/step - loss: 0.2539 - acc:
+0.9065 - val\_loss: 0.3436 - val\_acc: 0.8563
+Epoch 72/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2542 - acc:
+0.9065 - val\_loss: 0.3435 - val\_acc: 0.8539
+Epoch 73/1000
+2545/2545 [==============================] - 0s 66us/step - loss: 0.2522 - acc:
+0.9061 - val\_loss: 0.3424 - val\_acc: 0.8634
+Epoch 74/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2481 - acc:
+0.9084 - val\_loss: 0.3419 - val\_acc: 0.8575
+Epoch 75/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2464 - acc:
+0.9084 - val\_loss: 0.3415 - val\_acc: 0.8575
+Epoch 76/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2445 - acc:
+0.9108 - val\_loss: 0.3401 - val\_acc: 0.8598
+Epoch 77/1000
+2545/2545 [==============================] - 0s 63us/step - loss: 0.2437 - acc:
+0.9108 - val\_loss: 0.3416 - val\_acc: 0.8598
+Epoch 78/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2429 - acc:
+0.9108 - val\_loss: 0.3397 - val\_acc: 0.8598
+Epoch 79/1000
+2545/2545 [==============================] - 0s 61us/step - loss: 0.2401 - acc:
+0.9136 - val\_loss: 0.3624 - val\_acc: 0.8410
+Epoch 80/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.2416 - acc:
+0.9081 - val\_loss: 0.3377 - val\_acc: 0.8610
+Epoch 81/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.2377 - acc:
+0.9128 - val\_loss: 0.3438 - val\_acc: 0.8587
+Epoch 82/1000
+2545/2545 [==============================] - 0s 60us/step - loss: 0.2363 - acc:
+0.9139 - val\_loss: 0.3388 - val\_acc: 0.8622
+Epoch 83/1000
+2545/2545 [==============================] - 0s 72us/step - loss: 0.2349 - acc:
+0.9132 - val\_loss: 0.3370 - val\_acc: 0.8634
+dict\_keys(['val\_loss', 'val\_acc', 'loss', 'acc'])
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_66_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Shallow Neural Network on Character Level TF IDF Vectors 0.8832547169811321
+[[365  40]
+ [ 59 384]]
+\end{Verbatim}
+
+    \textbf{Deep Neural Networks}\\
+Redes neurais profundas são redes mais complexas em que as camadas
+escondidas realizam operações mais complexas. Diferentes tipos de redes
+podem ser aplicados aos problemas de classificação de texto.
+\includegraphics{attachment:image.png}
+
+    \textbf{Convolutional Neural Network}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{create\PYZus{}cnn}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Add an Input Layer}
+    \PY{n}{input\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Input}\PY{p}{(}\PY{p}{(}\PY{n}{maxlen}\PY{p}{,} \PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the word embedding Layer}
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n}{get\PYZus{}keras\PYZus{}embedding}\PY{p}{(}\PY{n}{train\PYZus{}embeddings}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{(}\PY{n}{input\PYZus{}layer}\PY{p}{)}
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{SpatialDropout1D}\PY{p}{(}\PY{l+m+mf}{0.05}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the convolutional Layer e pooling layer}
+    \PY{n}{conv\PYZus{}layer\PYZus{}1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Convolution1D}\PY{p}{(}\PY{l+m+mi}{128}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+    \PY{n}{pooling\PYZus{}layer\PYZus{}1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{MaxPooling1D}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{(}\PY{n}{conv\PYZus{}layer\PYZus{}1}\PY{p}{)}
+    \PY{n}{pooling\PYZus{}layer\PYZus{}1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.15}\PY{p}{)}\PY{p}{(}\PY{n}{pooling\PYZus{}layer\PYZus{}1}\PY{p}{)}
+    
+    \PY{n}{conv\PYZus{}layer\PYZus{}2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Convolution1D}\PY{p}{(}\PY{l+m+mi}{128}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{pooling\PYZus{}layer\PYZus{}1}\PY{p}{)}
+    \PY{n}{pooling\PYZus{}layer\PYZus{}2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{MaxPooling1D}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{(}\PY{n}{conv\PYZus{}layer\PYZus{}2}\PY{p}{)}
+    \PY{n}{pooling\PYZus{}layer\PYZus{}2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.15}\PY{p}{)}\PY{p}{(}\PY{n}{pooling\PYZus{}layer\PYZus{}2}\PY{p}{)}
+    
+    \PY{n}{conv\PYZus{}layer\PYZus{}3} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Convolution1D}\PY{p}{(}\PY{l+m+mi}{128}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{pooling\PYZus{}layer\PYZus{}2}\PY{p}{)}
+    \PY{n}{pooling\PYZus{}layer\PYZus{}3} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{GlobalMaxPooling1D}\PY{p}{(}\PY{p}{)}\PY{p}{(}\PY{n}{conv\PYZus{}layer\PYZus{}3}\PY{p}{)}
+    \PY{n}{pooling\PYZus{}layer\PYZus{}3} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.15}\PY{p}{)}\PY{p}{(}\PY{n}{pooling\PYZus{}layer\PYZus{}3}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Add the output Layers}
+    \PY{n}{output\PYZus{}layer1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{512}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{pooling\PYZus{}layer\PYZus{}3}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{512}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer1}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.12}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer2}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer3} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sigmoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer2}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Compile the model}
+    \PY{n}{model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{Model}\PY{p}{(}\PY{n}{inputs}\PY{o}{=}\PY{n}{input\PYZus{}layer}\PY{p}{,} \PY{n}{outputs}\PY{o}{=}\PY{n}{output\PYZus{}layer3}\PY{p}{)}
+    \PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{optimizer}\PY{o}{=}\PY{n}{optimizers}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary\PYZus{}crossentropy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{metrics}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{model}
+
+\PY{n}{classifier} \PY{o}{=} \PY{n}{create\PYZus{}cnn}\PY{p}{(}\PY{p}{)}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{train\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{test\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{classifier}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{model\PYZus{}cnn.h5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CNN, Word Embeddings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:From C:\textbackslash{}ProgramData\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}keras\textbackslash{}backend\textbackslash{}tensorflow\_backend.py:3445: calling dropout (from
+tensorflow.python.ops.nn\_ops) with keep\_prob is deprecated and will be removed
+in a future version.
+Instructions for updating:
+Please use `rate` instead of `keep\_prob`. Rate should be set to `rate = 1 -
+keep\_prob`.
+WARNING:tensorflow:From C:\textbackslash{}ProgramData\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-
+packages\textbackslash{}keras\textbackslash{}backend\textbackslash{}tensorflow\_backend.py:3976: The name tf.nn.max\_pool is
+deprecated. Please use tf.nn.max\_pool2d instead.
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Layer (type)                 Output Shape              Param \#
+=================================================================
+input\_1 (InputLayer)         (None, 400)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+embedding\_1 (Embedding)      (None, 400, 50)           9289150
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+spatial\_dropout1d\_1 (Spatial (None, 400, 50)           0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+conv1d\_1 (Conv1D)            (None, 396, 128)          32128
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+max\_pooling1d\_1 (MaxPooling1 (None, 198, 128)          0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_1 (Dropout)          (None, 198, 128)          0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+conv1d\_2 (Conv1D)            (None, 194, 128)          82048
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+max\_pooling1d\_2 (MaxPooling1 (None, 97, 128)           0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_2 (Dropout)          (None, 97, 128)           0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+conv1d\_3 (Conv1D)            (None, 93, 128)           82048
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+global\_max\_pooling1d\_1 (Glob (None, 128)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_3 (Dropout)          (None, 128)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_9 (Dense)              (None, 512)               66048
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_10 (Dense)             (None, 512)               262656
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_4 (Dropout)          (None, 512)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_11 (Dense)             (None, 1)                 513
+=================================================================
+Total params: 9,814,591
+Trainable params: 525,441
+Non-trainable params: 9,289,150
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+None
+Train on 2545 samples, validate on 849 samples
+Epoch 1/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.9029 - acc:
+0.4971 - val\_loss: 0.6923 - val\_acc: 0.5147
+Epoch 2/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.6945 - acc:
+0.4986 - val\_loss: 0.6865 - val\_acc: 0.4994
+Epoch 3/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.6944 - acc:
+0.4974 - val\_loss: 0.6936 - val\_acc: 0.5112
+Epoch 4/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.6955 - acc:
+0.4876 - val\_loss: 0.6895 - val\_acc: 0.5418
+Epoch 5/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.6588 - acc:
+0.5961 - val\_loss: 0.5200 - val\_acc: 0.7350
+Epoch 6/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.5210 - acc:
+0.7379 - val\_loss: 0.5067 - val\_acc: 0.7479
+Epoch 7/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.4540 - acc:
+0.7988 - val\_loss: 0.4249 - val\_acc: 0.8186
+Epoch 8/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.3995 - acc:
+0.8365 - val\_loss: 0.4515 - val\_acc: 0.8104
+Epoch 9/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.3953 - acc:
+0.8369 - val\_loss: 0.4858 - val\_acc: 0.7574
+Epoch 10/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.3794 - acc:
+0.8401 - val\_loss: 0.4075 - val\_acc: 0.8269
+Epoch 11/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.3294 - acc:
+0.8672 - val\_loss: 0.4000 - val\_acc: 0.8068
+Epoch 12/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.3314 - acc:
+0.8605 - val\_loss: 0.4033 - val\_acc: 0.8339
+Epoch 13/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.3028 - acc:
+0.8837 - val\_loss: 0.4148 - val\_acc: 0.8386s: 0.31
+Epoch 14/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2697 - acc:
+0.8959 - val\_loss: 0.4062 - val\_acc: 0.8269
+Epoch 15/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2555 - acc:
+0.8963 - val\_loss: 0.4283 - val\_acc: 0.8410
+Epoch 16/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.2321 - acc:
+0.9124 - val\_loss: 0.4042 - val\_acc: 0.8210
+Epoch 17/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.2086 - acc:
+0.9226 - val\_loss: 0.4684 - val\_acc: 0.8457
+Epoch 18/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.2042 - acc:
+0.9198 - val\_loss: 0.4483 - val\_acc: 0.8339
+Epoch 19/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.1758 - acc:
+0.9324 - val\_loss: 0.4417 - val\_acc: 0.8316
+Epoch 20/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.1650 - acc:
+0.9411 - val\_loss: 0.4879 - val\_acc: 0.8410
+Epoch 21/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.1632 - acc:
+0.9415 - val\_loss: 0.4895 - val\_acc: 0.7739
+Epoch 22/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.1600 - acc:
+0.9434 - val\_loss: 0.4839 - val\_acc: 0.8304
+Epoch 23/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.1139 - acc:
+0.9615 - val\_loss: 0.5419 - val\_acc: 0.8375
+Epoch 24/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.1147 - acc:
+0.9591 - val\_loss: 0.5550 - val\_acc: 0.8386
+Epoch 25/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.1147 - acc:
+0.9635 - val\_loss: 0.7531 - val\_acc: 0.8316
+Epoch 26/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.1297 - acc:
+0.9513 - val\_loss: 0.5897 - val\_acc: 0.8445
+Epoch 27/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.0910 - acc:
+0.9658 - val\_loss: 0.5882 - val\_acc: 0.8386
+dict\_keys(['val\_loss', 'val\_acc', 'loss', 'acc'])
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_69_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CNN, Word Embeddings 0.8620283018867925
+[[336  29]
+ [ 88 395]]
+\end{Verbatim}
+
+    \textbf{Recurrent Neural Network -- LSTM}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{create\PYZus{}rnn\PYZus{}lstm}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    
+    \PY{c+c1}{\PYZsh{} Add an Input Layer}
+    \PY{n}{input\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Input}\PY{p}{(}\PY{p}{(}\PY{n}{maxlen}\PY{p}{,} \PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the word embedding Layer}
+    
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n}{get\PYZus{}keras\PYZus{}embedding}\PY{p}{(}\PY{n}{train\PYZus{}embeddings}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{(}\PY{n}{input\PYZus{}layer}\PY{p}{)}
+    
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{SpatialDropout1D}\PY{p}{(}\PY{l+m+mf}{0.05}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the LSTM Layer}
+    \PY{n}{lstm\PYZus{}layer\PYZus{}1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{LSTM}\PY{p}{(}\PY{l+m+mi}{256}\PY{p}{,} \PY{n}{return\PYZus{}sequences}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)} \PY{c+c1}{\PYZsh{}return\PYZus{}sequences=True}
+    \PY{n}{lstm\PYZus{}layer\PYZus{}2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{LSTM}\PY{p}{(}\PY{l+m+mi}{128}\PY{p}{,} \PY{n}{return\PYZus{}sequences}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{(}\PY{n}{lstm\PYZus{}layer\PYZus{}1}\PY{p}{)}
+    \PY{n}{lstm\PYZus{}layer\PYZus{}3} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{LSTM}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{)}\PY{p}{(}\PY{n}{lstm\PYZus{}layer\PYZus{}2}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the output Layers}
+    \PY{n}{output\PYZus{}layer1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{256}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{lstm\PYZus{}layer\PYZus{}3}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer1}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sigmoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer1}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Compile the model}
+    \PY{n}{model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{Model}\PY{p}{(}\PY{n}{inputs}\PY{o}{=}\PY{n}{input\PYZus{}layer}\PY{p}{,} \PY{n}{outputs}\PY{o}{=}\PY{n}{output\PYZus{}layer2}\PY{p}{)}
+    \PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{optimizer}\PY{o}{=}\PY{n}{optimizers}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary\PYZus{}crossentropy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{metrics}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{model}
+
+\PY{n}{classifier} \PY{o}{=} \PY{n}{create\PYZus{}rnn\PYZus{}lstm}\PY{p}{(}\PY{p}{)}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{train\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{test\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RNN\PYZhy{}LSTM, Word Embeddings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Layer (type)                 Output Shape              Param \#
+=================================================================
+input\_2 (InputLayer)         (None, 400)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+embedding\_2 (Embedding)      (None, 400, 50)           9289150
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+spatial\_dropout1d\_2 (Spatial (None, 400, 50)           0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+lstm\_1 (LSTM)                (None, 400, 256)          314368
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+lstm\_2 (LSTM)                (None, 400, 128)          197120
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+lstm\_3 (LSTM)                (None, 64)                49408
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_12 (Dense)             (None, 256)               16640
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_5 (Dropout)          (None, 256)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_13 (Dense)             (None, 1)                 257
+=================================================================
+Total params: 9,866,943
+Trainable params: 9,866,943
+Non-trainable params: 0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+None
+Train on 2545 samples, validate on 849 samples
+Epoch 1/1000
+2545/2545 [==============================] - 134s 53ms/step - loss: 0.6990 -
+acc: 0.5014 - val\_loss: 0.6939 - val\_acc: 0.4994
+Epoch 2/1000
+2545/2545 [==============================] - 136s 53ms/step - loss: 0.6926 -
+acc: 0.5194 - val\_loss: 0.6935 - val\_acc: 0.5183
+Epoch 3/1000
+2545/2545 [==============================] - 136s 53ms/step - loss: 0.6886 -
+acc: 0.5426 - val\_loss: 0.6881 - val\_acc: 0.5206
+Epoch 4/1000
+2545/2545 [==============================] - 136s 53ms/step - loss: 0.6838 -
+acc: 0.5729 - val\_loss: 0.6584 - val\_acc: 0.6160
+Epoch 5/1000
+2545/2545 [==============================] - 137s 54ms/step - loss: 0.6590 -
+acc: 0.6090 - val\_loss: 0.6816 - val\_acc: 0.5630
+Epoch 6/1000
+2545/2545 [==============================] - 136s 53ms/step - loss: 0.6774 -
+acc: 0.5780 - val\_loss: 0.6371 - val\_acc: 0.6478
+Epoch 7/1000
+2545/2545 [==============================] - 136s 54ms/step - loss: 0.6391 -
+acc: 0.6397 - val\_loss: 0.6669 - val\_acc: 0.5854
+Epoch 8/1000
+2545/2545 [==============================] - 137s 54ms/step - loss: 0.6304 -
+acc: 0.6515 - val\_loss: 0.6102 - val\_acc: 0.6914
+Epoch 9/1000
+2545/2545 [==============================] - 138s 54ms/step - loss: 0.5921 -
+acc: 0.6955 - val\_loss: 0.5775 - val\_acc: 0.7055
+Epoch 10/1000
+2545/2545 [==============================] - 137s 54ms/step - loss: 0.5661 -
+acc: 0.7218 - val\_loss: 0.6539 - val\_acc: 0.6949
+Epoch 11/1000
+2545/2545 [==============================] - 137s 54ms/step - loss: 0.5489 -
+acc: 0.7360 - val\_loss: 0.5907 - val\_acc: 0.6996
+Epoch 12/1000
+2545/2545 [==============================] - 138s 54ms/step - loss: 0.4767 -
+acc: 0.7823 - val\_loss: 0.4897 - val\_acc: 0.7633
+Epoch 13/1000
+2545/2545 [==============================] - 138s 54ms/step - loss: 0.4736 -
+acc: 0.7929 - val\_loss: 0.5487 - val\_acc: 0.7208
+Epoch 14/1000
+2545/2545 [==============================] - 137s 54ms/step - loss: 0.3981 -
+acc: 0.8283 - val\_loss: 0.4331 - val\_acc: 0.8174
+Epoch 15/1000
+2545/2545 [==============================] - 138s 54ms/step - loss: 0.3423 -
+acc: 0.8585 - val\_loss: 0.4031 - val\_acc: 0.8186
+Epoch 16/1000
+2545/2545 [==============================] - 141s 55ms/step - loss: 0.3017 -
+acc: 0.8825 - val\_loss: 0.3866 - val\_acc: 0.8410
+Epoch 17/1000
+2545/2545 [==============================] - 154s 60ms/step - loss: 0.2860 -
+acc: 0.8892 - val\_loss: 0.4420 - val\_acc: 0.8339
+Epoch 18/1000
+2545/2545 [==============================] - 143s 56ms/step - loss: 0.2534 -
+acc: 0.8971 - val\_loss: 0.4271 - val\_acc: 0.8481
+Epoch 19/1000
+2545/2545 [==============================] - 157s 62ms/step - loss: 0.2126 -
+acc: 0.9183 - val\_loss: 0.4113 - val\_acc: 0.8634
+Epoch 20/1000
+2545/2545 [==============================] - 151s 59ms/step - loss: 0.1877 -
+acc: 0.9332 - val\_loss: 0.5728 - val\_acc: 0.8045
+Epoch 21/1000
+2545/2545 [==============================] - 149s 59ms/step - loss: 0.1687 -
+acc: 0.9352 - val\_loss: 0.4830 - val\_acc: 0.8410
+Epoch 22/1000
+2545/2545 [==============================] - 141s 56ms/step - loss: 0.1354 -
+acc: 0.9481 - val\_loss: 0.4565 - val\_acc: 0.8233
+Epoch 23/1000
+2545/2545 [==============================] - 142s 56ms/step - loss: 0.1023 -
+acc: 0.9646 - val\_loss: 0.6014 - val\_acc: 0.8528
+Epoch 24/1000
+2545/2545 [==============================] - 145s 57ms/step - loss: 0.0831 -
+acc: 0.9705 - val\_loss: 0.6193 - val\_acc: 0.8551
+Epoch 25/1000
+2545/2545 [==============================] - 148s 58ms/step - loss: 0.0892 -
+acc: 0.9690 - val\_loss: 0.6082 - val\_acc: 0.8304
+Epoch 26/1000
+2545/2545 [==============================] - 141s 56ms/step - loss: 0.0636 -
+acc: 0.9788 - val\_loss: 0.6675 - val\_acc: 0.8445
+Epoch 27/1000
+2545/2545 [==============================] - 139s 55ms/step - loss: 0.0586 -
+acc: 0.9788 - val\_loss: 0.6902 - val\_acc: 0.8386
+Epoch 28/1000
+2545/2545 [==============================] - 139s 55ms/step - loss: 0.0472 -
+acc: 0.9843 - val\_loss: 0.7833 - val\_acc: 0.8504
+Epoch 29/1000
+2545/2545 [==============================] - 147s 58ms/step - loss: 0.0460 -
+acc: 0.9831 - val\_loss: 0.7820 - val\_acc: 0.8422
+dict\_keys(['val\_loss', 'val\_acc', 'loss', 'acc'])
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_71_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RNN-LSTM, Word Embeddings 0.8820754716981132
+[[359  35]
+ [ 65 389]]
+\end{Verbatim}
+
+    \textbf{Recurrent Neural Network -- GRU}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{create\PYZus{}rnn\PYZus{}gru}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Add an Input Layer}
+    \PY{n}{input\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Input}\PY{p}{(}\PY{p}{(}\PY{n}{maxlen}\PY{p}{,} \PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the word embedding Layer}
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n}{get\PYZus{}keras\PYZus{}embedding}\PY{p}{(}\PY{n}{train\PYZus{}embeddings}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{(}\PY{n}{input\PYZus{}layer}\PY{p}{)}
+    
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{SpatialDropout1D}\PY{p}{(}\PY{l+m+mf}{0.05}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the GRU Layer}
+    \PY{n}{gru\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{GRU}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{return\PYZus{}sequences}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+    \PY{n}{gru\PYZus{}layer\PYZus{}1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{GRU}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{(}\PY{n}{gru\PYZus{}layer}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the output Layers}
+    \PY{n}{output\PYZus{}layer1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sigmoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{gru\PYZus{}layer\PYZus{}1}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer1}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sigmoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer1}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Compile the model}
+    \PY{n}{model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{Model}\PY{p}{(}\PY{n}{inputs}\PY{o}{=}\PY{n}{input\PYZus{}layer}\PY{p}{,} \PY{n}{outputs}\PY{o}{=}\PY{n}{output\PYZus{}layer2}\PY{p}{)}
+    \PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{optimizer}\PY{o}{=}\PY{n}{optimizers}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary\PYZus{}crossentropy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{metrics}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{model}
+
+\PY{n}{classifier} \PY{o}{=} \PY{n}{create\PYZus{}rnn\PYZus{}gru}\PY{p}{(}\PY{p}{)}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{train\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{test\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RNN\PYZhy{}GRU, Word Embeddings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Layer (type)                 Output Shape              Param \#
+=================================================================
+input\_3 (InputLayer)         (None, 400)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+embedding\_3 (Embedding)      (None, 400, 50)           9289150
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+spatial\_dropout1d\_3 (Spatial (None, 400, 50)           0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+gru\_1 (GRU)                  (None, 400, 20)           4260
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+gru\_2 (GRU)                  (None, 20)                2460
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_14 (Dense)             (None, 50)                1050
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_6 (Dropout)          (None, 50)                0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_15 (Dense)             (None, 1)                 51
+=================================================================
+Total params: 9,296,971
+Trainable params: 9,296,971
+Non-trainable params: 0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+None
+Train on 2545 samples, validate on 849 samples
+Epoch 1/1000
+2545/2545 [==============================] - 22s 9ms/step - loss: 0.7107 - acc:
+0.4982 - val\_loss: 0.6920 - val\_acc: 0.5241
+Epoch 2/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.7043 - acc:
+0.5108 - val\_loss: 0.6902 - val\_acc: 0.5218
+Epoch 3/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.6966 - acc:
+0.5234 - val\_loss: 0.6869 - val\_acc: 0.5395
+Epoch 4/1000
+2545/2545 [==============================] - 20s 8ms/step - loss: 0.6914 - acc:
+0.5434 - val\_loss: 0.6819 - val\_acc: 0.5453
+Epoch 5/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.6837 - acc:
+0.5639 - val\_loss: 0.6795 - val\_acc: 0.5748
+Epoch 6/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.6715 - acc:
+0.5870 - val\_loss: 0.6798 - val\_acc: 0.5760
+Epoch 7/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.6775 - acc:
+0.5760 - val\_loss: 0.6686 - val\_acc: 0.5866
+Epoch 8/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.6666 - acc:
+0.6008 - val\_loss: 0.6663 - val\_acc: 0.5854
+Epoch 9/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.6573 - acc:
+0.6090 - val\_loss: 0.6518 - val\_acc: 0.6337
+Epoch 10/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.6221 - acc:
+0.6585 - val\_loss: 0.5785 - val\_acc: 0.7032
+Epoch 11/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.5978 - acc:
+0.6900 - val\_loss: 0.6034 - val\_acc: 0.6620
+Epoch 12/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.5073 - acc:
+0.7819 - val\_loss: 0.5305 - val\_acc: 0.7727
+Epoch 13/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.5850 - acc:
+0.7143 - val\_loss: 0.5143 - val\_acc: 0.7715
+Epoch 14/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.4891 - acc:
+0.7831 - val\_loss: 0.4793 - val\_acc: 0.7833
+Epoch 15/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.4498 - acc:
+0.8106 - val\_loss: 0.4745 - val\_acc: 0.7856
+Epoch 16/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.4336 - acc:
+0.8169 - val\_loss: 0.4596 - val\_acc: 0.7962
+Epoch 17/1000
+2545/2545 [==============================] - 17s 7ms/step - loss: 0.4253 - acc:
+0.8275 - val\_loss: 0.4445 - val\_acc: 0.7974
+Epoch 18/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.4021 - acc:
+0.8354 - val\_loss: 0.4298 - val\_acc: 0.8127
+Epoch 19/1000
+2545/2545 [==============================] - 20s 8ms/step - loss: 0.3970 - acc:
+0.8393 - val\_loss: 0.4256 - val\_acc: 0.8163
+Epoch 20/1000
+2545/2545 [==============================] - 19s 8ms/step - loss: 0.3804 - acc:
+0.8448 - val\_loss: 0.4139 - val\_acc: 0.8151
+Epoch 21/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.3896 - acc:
+0.8409 - val\_loss: 0.4043 - val\_acc: 0.8257
+Epoch 22/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.3652 - acc:
+0.8534 - val\_loss: 0.4209 - val\_acc: 0.8339
+Epoch 23/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.3644 - acc:
+0.8585 - val\_loss: 0.3937 - val\_acc: 0.8363
+Epoch 24/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.3606 - acc:
+0.8585 - val\_loss: 0.3946 - val\_acc: 0.8433
+Epoch 25/1000
+2545/2545 [==============================] - 20s 8ms/step - loss: 0.3542 - acc:
+0.8593 - val\_loss: 0.3826 - val\_acc: 0.8375
+Epoch 26/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3476 - acc:
+0.8629 - val\_loss: 0.4059 - val\_acc: 0.8398
+Epoch 27/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3484 - acc:
+0.8644 - val\_loss: 0.3838 - val\_acc: 0.8445
+Epoch 28/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.3396 - acc:
+0.8703 - val\_loss: 0.3896 - val\_acc: 0.8481
+Epoch 29/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.3328 - acc:
+0.8750 - val\_loss: 0.3849 - val\_acc: 0.8445
+Epoch 30/1000
+2545/2545 [==============================] - 20s 8ms/step - loss: 0.3348 - acc:
+0.8719 - val\_loss: 0.4015 - val\_acc: 0.8422
+Epoch 31/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3284 - acc:
+0.8747 - val\_loss: 0.3768 - val\_acc: 0.8528
+Epoch 32/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3299 - acc:
+0.8786 - val\_loss: 0.3671 - val\_acc: 0.8528
+Epoch 33/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3220 - acc:
+0.8794 - val\_loss: 0.3798 - val\_acc: 0.8481
+Epoch 34/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3172 - acc:
+0.8809 - val\_loss: 0.3773 - val\_acc: 0.8563
+Epoch 35/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.3128 - acc:
+0.8849 - val\_loss: 0.3828 - val\_acc: 0.8469
+Epoch 36/1000
+2545/2545 [==============================] - 19s 7ms/step - loss: 0.3093 - acc:
+0.8817 - val\_loss: 0.3753 - val\_acc: 0.8528
+Epoch 37/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3092 - acc:
+0.8837 - val\_loss: 0.3840 - val\_acc: 0.8575
+Epoch 38/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3169 - acc:
+0.8821 - val\_loss: 0.3849 - val\_acc: 0.8457
+Epoch 39/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.2975 - acc:
+0.8908 - val\_loss: 0.3753 - val\_acc: 0.8528
+Epoch 40/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.2960 - acc:
+0.8884 - val\_loss: 0.3842 - val\_acc: 0.8469
+Epoch 41/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3054 - acc:
+0.8864 - val\_loss: 0.3785 - val\_acc: 0.8492
+Epoch 42/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3198 - acc:
+0.8711 - val\_loss: 0.3853 - val\_acc: 0.8363
+Epoch 43/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.3018 - acc:
+0.8849 - val\_loss: 0.3815 - val\_acc: 0.8504
+Epoch 44/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.2863 - acc:
+0.8935 - val\_loss: 0.3748 - val\_acc: 0.8516
+Epoch 45/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.2918 - acc:
+0.8900 - val\_loss: 0.4291 - val\_acc: 0.8269
+Epoch 46/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.2842 - acc:
+0.8978 - val\_loss: 0.3864 - val\_acc: 0.8504
+Epoch 47/1000
+2545/2545 [==============================] - 18s 7ms/step - loss: 0.2857 - acc:
+0.8943 - val\_loss: 0.3888 - val\_acc: 0.8516
+dict\_keys(['val\_loss', 'val\_acc', 'loss', 'acc'])
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_73_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RNN-GRU, Word Embeddings 0.8726415094339622
+[[335  19]
+ [ 89 405]]
+\end{Verbatim}
+
+    \textbf{3.7.4 Bidirectional RNN}\\
+RNN layers can be wrapped in Bidirectional layers as well. Lets wrap our
+GRU layer in bidirectional layer.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{create\PYZus{}bidirectional\PYZus{}rnn}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Add an Input Layer}
+    \PY{n}{input\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Input}\PY{p}{(}\PY{p}{(}\PY{n}{maxlen}\PY{p}{,} \PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the word embedding Layer}
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n}{get\PYZus{}keras\PYZus{}embedding}\PY{p}{(}\PY{n}{train\PYZus{}embeddings}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{(}\PY{n}{input\PYZus{}layer}\PY{p}{)}
+    
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{SpatialDropout1D}\PY{p}{(}\PY{l+m+mf}{0.05}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the GRU Layer}
+    \PY{n}{lstm\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Bidirectional}\PY{p}{(}\PY{n}{layers}\PY{o}{.}\PY{n}{GRU}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the output Layers}
+    \PY{n}{output\PYZus{}layer1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{lstm\PYZus{}layer}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer1}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sigmoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer1}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Compile the model}
+    \PY{n}{model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{Model}\PY{p}{(}\PY{n}{inputs}\PY{o}{=}\PY{n}{input\PYZus{}layer}\PY{p}{,} \PY{n}{outputs}\PY{o}{=}\PY{n}{output\PYZus{}layer2}\PY{p}{)}
+    \PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{optimizer}\PY{o}{=}\PY{n}{optimizers}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary\PYZus{}crossentropy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{metrics}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{model}
+
+\PY{n}{classifier} \PY{o}{=} \PY{n}{create\PYZus{}bidirectional\PYZus{}rnn}\PY{p}{(}\PY{p}{)}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{train\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{test\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RNN\PYZhy{}Bidirectional, Word Embeddings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Layer (type)                 Output Shape              Param \#
+=================================================================
+input\_4 (InputLayer)         (None, 400)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+embedding\_4 (Embedding)      (None, 400, 50)           9289150
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+spatial\_dropout1d\_4 (Spatial (None, 400, 50)           0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+bidirectional\_1 (Bidirection (None, 40)                8520
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_16 (Dense)             (None, 50)                2050
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_7 (Dropout)          (None, 50)                0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_17 (Dense)             (None, 1)                 51
+=================================================================
+Total params: 9,299,771
+Trainable params: 9,299,771
+Non-trainable params: 0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+None
+Train on 2545 samples, validate on 849 samples
+Epoch 1/1000
+2545/2545 [==============================] - 16s 6ms/step - loss: 0.6685 - acc:
+0.5749 - val\_loss: 0.6114 - val\_acc: 0.6408
+Epoch 2/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.6176 - acc:
+0.6354 - val\_loss: 0.6015 - val\_acc: 0.6384
+Epoch 3/1000
+2545/2545 [==============================] - 14s 6ms/step - loss: 0.6030 - acc:
+0.6519 - val\_loss: 0.5913 - val\_acc: 0.6537
+Epoch 4/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.5915 - acc:
+0.6523 - val\_loss: 0.5862 - val\_acc: 0.6549
+Epoch 5/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.5844 - acc:
+0.6542 - val\_loss: 0.5790 - val\_acc: 0.6631
+Epoch 6/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.5778 - acc:
+0.6656 - val\_loss: 0.5755 - val\_acc: 0.6678
+Epoch 7/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.5670 - acc:
+0.6864 - val\_loss: 0.5744 - val\_acc: 0.6890
+Epoch 8/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.5525 - acc:
+0.6923 - val\_loss: 0.5650 - val\_acc: 0.6820
+Epoch 9/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.5508 - acc:
+0.6935 - val\_loss: 0.5608 - val\_acc: 0.6784
+Epoch 10/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.5452 - acc:
+0.6974 - val\_loss: 0.5580 - val\_acc: 0.6820
+Epoch 11/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.5366 - acc:
+0.7120 - val\_loss: 0.5568 - val\_acc: 0.6902
+Epoch 12/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.5364 - acc:
+0.7108 - val\_loss: 0.5560 - val\_acc: 0.6961
+Epoch 13/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.5145 - acc:
+0.7285 - val\_loss: 0.5498 - val\_acc: 0.7008
+Epoch 14/1000
+2545/2545 [==============================] - 14s 6ms/step - loss: 0.5131 - acc:
+0.7344 - val\_loss: 0.5487 - val\_acc: 0.7173
+Epoch 15/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.5031 - acc:
+0.7371 - val\_loss: 0.5533 - val\_acc: 0.6938
+Epoch 16/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.4881 - acc:
+0.7505 - val\_loss: 0.5211 - val\_acc: 0.7397
+Epoch 17/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.4740 - acc:
+0.7587 - val\_loss: 0.4957 - val\_acc: 0.7633
+Epoch 18/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.4446 - acc:
+0.7894 - val\_loss: 0.4779 - val\_acc: 0.7845
+Epoch 19/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.4099 - acc:
+0.8173 - val\_loss: 0.4459 - val\_acc: 0.8174
+Epoch 20/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.3964 - acc:
+0.8236 - val\_loss: 0.4241 - val\_acc: 0.8221
+Epoch 21/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.3782 - acc:
+0.8436 - val\_loss: 0.4260 - val\_acc: 0.8186
+Epoch 22/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.3577 - acc:
+0.8440 - val\_loss: 0.4148 - val\_acc: 0.8304
+Epoch 23/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.3437 - acc:
+0.8574 - val\_loss: 0.4144 - val\_acc: 0.8316
+Epoch 24/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.3267 - acc:
+0.8629 - val\_loss: 0.4443 - val\_acc: 0.8257
+Epoch 25/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.3317 - acc:
+0.8637 - val\_loss: 0.3944 - val\_acc: 0.8351
+Epoch 26/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2982 - acc:
+0.8825 - val\_loss: 0.3949 - val\_acc: 0.8375
+Epoch 27/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2994 - acc:
+0.8774 - val\_loss: 0.3967 - val\_acc: 0.8528
+Epoch 28/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.2959 - acc:
+0.8829 - val\_loss: 0.3947 - val\_acc: 0.8422
+Epoch 29/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2900 - acc:
+0.8837 - val\_loss: 0.4047 - val\_acc: 0.8469
+Epoch 30/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2814 - acc:
+0.8923 - val\_loss: 0.4017 - val\_acc: 0.8422
+Epoch 31/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2683 - acc:
+0.8951 - val\_loss: 0.4000 - val\_acc: 0.8481
+Epoch 32/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2654 - acc:
+0.8923 - val\_loss: 0.4111 - val\_acc: 0.8363
+Epoch 33/1000
+2545/2545 [==============================] - 15s 6ms/step - loss: 0.2646 - acc:
+0.8971 - val\_loss: 0.4059 - val\_acc: 0.8375
+Epoch 34/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.2599 - acc:
+0.8959 - val\_loss: 0.4186 - val\_acc: 0.8292
+Epoch 35/1000
+2545/2545 [==============================] - 14s 5ms/step - loss: 0.2612 - acc:
+0.9010 - val\_loss: 0.3953 - val\_acc: 0.8587
+Epoch 36/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2536 - acc:
+0.9084 - val\_loss: 0.3918 - val\_acc: 0.8492
+Epoch 37/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2514 - acc:
+0.8947 - val\_loss: 0.4014 - val\_acc: 0.8339
+Epoch 38/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2456 - acc:
+0.9061 - val\_loss: 0.4104 - val\_acc: 0.8516
+Epoch 39/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2413 - acc:
+0.9057 - val\_loss: 0.4060 - val\_acc: 0.8386
+Epoch 40/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2406 - acc:
+0.9136 - val\_loss: 0.4105 - val\_acc: 0.8398
+Epoch 41/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2319 - acc:
+0.9136 - val\_loss: 0.4181 - val\_acc: 0.8410
+Epoch 42/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2304 - acc:
+0.9112 - val\_loss: 0.4343 - val\_acc: 0.8245
+Epoch 43/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2245 - acc:
+0.9139 - val\_loss: 0.4186 - val\_acc: 0.8422
+Epoch 44/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2264 - acc:
+0.9128 - val\_loss: 0.4191 - val\_acc: 0.8398
+Epoch 45/1000
+2545/2545 [==============================] - 13s 5ms/step - loss: 0.2138 - acc:
+0.9175 - val\_loss: 0.4174 - val\_acc: 0.8398
+dict\_keys(['val\_loss', 'val\_acc', 'loss', 'acc'])
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_75_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RNN-Bidirectional, Word Embeddings 0.8620283018867925
+[[342  35]
+ [ 82 389]]
+\end{Verbatim}
+
+    \textbf{3.7.5 Recurrent Convolutional Neural Network}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{create\PYZus{}rcnn}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Add an Input Layer}
+    \PY{n}{input\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Input}\PY{p}{(}\PY{p}{(}\PY{n}{maxlen}\PY{p}{,} \PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the word embedding Layer}
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{BDTD\PYZus{}word2vec\PYZus{}50}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n}{get\PYZus{}keras\PYZus{}embedding}\PY{p}{(}\PY{n}{train\PYZus{}embeddings}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{(}\PY{n}{input\PYZus{}layer}\PY{p}{)}
+ 
+    \PY{n}{embedding\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{SpatialDropout1D}\PY{p}{(}\PY{l+m+mf}{0.05}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Add the recurrent layer}
+    \PY{n}{rnn\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Bidirectional}\PY{p}{(}\PY{n}{layers}\PY{o}{.}\PY{n}{GRU}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{return\PYZus{}sequences}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Add the convolutional Layer}
+    \PY{n}{conv\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Convolution1D}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sigmoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{embedding\PYZus{}layer}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the pooling Layer}
+    \PY{n}{pooling\PYZus{}layer} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{GlobalMaxPool1D}\PY{p}{(}\PY{p}{)}\PY{p}{(}\PY{n}{conv\PYZus{}layer}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add the output Layers}
+    \PY{n}{output\PYZus{}layer1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sigmoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{pooling\PYZus{}layer}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer1} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer1}\PY{p}{)}
+    \PY{n}{output\PYZus{}layer2} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sigmoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{output\PYZus{}layer1}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Compile the model}
+    \PY{n}{model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{Model}\PY{p}{(}\PY{n}{inputs}\PY{o}{=}\PY{n}{input\PYZus{}layer}\PY{p}{,} \PY{n}{outputs}\PY{o}{=}\PY{n}{output\PYZus{}layer2}\PY{p}{)}
+    \PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{optimizer}\PY{o}{=}\PY{n}{optimizers}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{loss}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary\PYZus{}crossentropy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{metrics}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{model}
+
+\PY{n}{classifier} \PY{o}{=} \PY{n}{create\PYZus{}rcnn}\PY{p}{(}\PY{p}{)}
+\PY{n}{accuracy}\PY{p}{,} \PY{n}{confusion} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{classifier}\PY{p}{,} \PY{n}{train\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{,} \PY{n}{test\PYZus{}seq\PYZus{}x}\PY{p}{,} \PY{n}{is\PYZus{}neural\PYZus{}net}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RCNN, Word Embeddings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{accuracy}\PY{p}{)}
+\PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Layer (type)                 Output Shape              Param \#
+=================================================================
+input\_5 (InputLayer)         (None, 400)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+embedding\_5 (Embedding)      (None, 400, 50)           9289150
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+spatial\_dropout1d\_5 (Spatial (None, 400, 50)           0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+conv1d\_4 (Conv1D)            (None, 398, 100)          15100
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+global\_max\_pooling1d\_2 (Glob (None, 100)               0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_18 (Dense)             (None, 50)                5050
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_8 (Dropout)          (None, 50)                0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_19 (Dense)             (None, 1)                 51
+=================================================================
+Total params: 9,309,351
+Trainable params: 9,309,351
+Non-trainable params: 0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+None
+Train on 2545 samples, validate on 849 samples
+Epoch 1/1000
+2545/2545 [==============================] - 9s 3ms/step - loss: 0.7200 - acc:
+0.5187 - val\_loss: 0.6887 - val\_acc: 0.4994
+Epoch 2/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.7057 - acc:
+0.5151 - val\_loss: 0.6647 - val\_acc: 0.6855
+Epoch 3/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.6585 - acc:
+0.6075 - val\_loss: 0.6173 - val\_acc: 0.7491
+Epoch 4/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.6049 - acc:
+0.6825 - val\_loss: 0.5708 - val\_acc: 0.7739
+Epoch 5/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.5516 - acc:
+0.7399 - val\_loss: 0.5299 - val\_acc: 0.7845
+Epoch 6/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.5095 - acc:
+0.7874 - val\_loss: 0.5023 - val\_acc: 0.7892
+Epoch 7/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.4635 - acc:
+0.8067 - val\_loss: 0.4550 - val\_acc: 0.8233
+Epoch 8/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.4213 - acc:
+0.8389 - val\_loss: 0.4284 - val\_acc: 0.8292
+Epoch 9/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.3953 - acc:
+0.8413 - val\_loss: 0.3993 - val\_acc: 0.8551
+Epoch 10/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.3718 - acc:
+0.8511 - val\_loss: 0.3864 - val\_acc: 0.8481
+Epoch 11/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.3544 - acc:
+0.8633 - val\_loss: 0.3904 - val\_acc: 0.8469
+Epoch 12/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.3303 - acc:
+0.8723 - val\_loss: 0.3711 - val\_acc: 0.8481
+Epoch 13/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.3202 - acc:
+0.8758 - val\_loss: 0.3722 - val\_acc: 0.8469
+Epoch 14/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.3041 - acc:
+0.8861 - val\_loss: 0.3651 - val\_acc: 0.8445
+Epoch 15/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2935 - acc:
+0.8884 - val\_loss: 0.3647 - val\_acc: 0.8504
+Epoch 16/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2869 - acc:
+0.8916 - val\_loss: 0.3601 - val\_acc: 0.8528
+Epoch 17/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2848 - acc:
+0.8931 - val\_loss: 0.3713 - val\_acc: 0.8504
+Epoch 18/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2778 - acc:
+0.8951 - val\_loss: 0.3652 - val\_acc: 0.8469
+Epoch 19/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2563 - acc:
+0.9065 - val\_loss: 0.3641 - val\_acc: 0.8563
+Epoch 20/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2528 - acc:
+0.9081 - val\_loss: 0.3658 - val\_acc: 0.8551
+Epoch 21/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2453 - acc:
+0.9120 - val\_loss: 0.3731 - val\_acc: 0.8587
+Epoch 22/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2417 - acc:
+0.9120 - val\_loss: 0.3685 - val\_acc: 0.8528
+Epoch 23/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2442 - acc:
+0.9116 - val\_loss: 0.3652 - val\_acc: 0.8539
+Epoch 24/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2294 - acc:
+0.9210 - val\_loss: 0.3679 - val\_acc: 0.8610
+Epoch 25/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2223 - acc:
+0.9183 - val\_loss: 0.3723 - val\_acc: 0.8575
+Epoch 26/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2255 - acc:
+0.9171 - val\_loss: 0.3739 - val\_acc: 0.8598
+Epoch 27/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2078 - acc:
+0.9242 - val\_loss: 0.3854 - val\_acc: 0.8575
+Epoch 28/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2106 - acc:
+0.9308 - val\_loss: 0.3813 - val\_acc: 0.8528
+Epoch 29/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2165 - acc:
+0.9210 - val\_loss: 0.3802 - val\_acc: 0.8539
+Epoch 30/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.1980 - acc:
+0.9340 - val\_loss: 0.3840 - val\_acc: 0.8551
+Epoch 31/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.2011 - acc:
+0.9328 - val\_loss: 0.3880 - val\_acc: 0.8469
+Epoch 32/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.1939 - acc:
+0.9285 - val\_loss: 0.3849 - val\_acc: 0.8504
+Epoch 33/1000
+2545/2545 [==============================] - 8s 3ms/step - loss: 0.1809 - acc:
+0.9360 - val\_loss: 0.3948 - val\_acc: 0.8492
+Epoch 34/1000
+2545/2545 [==============================] - 7s 3ms/step - loss: 0.1842 - acc:
+0.9344 - val\_loss: 0.3982 - val\_acc: 0.8539
+dict\_keys(['val\_loss', 'val\_acc', 'loss', 'acc'])
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_77_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RCNN, Word Embeddings 0.8679245283018868
+[[362  50]
+ [ 62 374]]
+\end{Verbatim}
+
+    \hypertarget{conclusuxe3o}{%
+\section{Conclusão}\label{conclusuxe3o}}
+
+    O modelo com o melhor resultado encontrado foi o algoritmo Support
+Vector Machine usando vetores TF-IDF com Bigramas e Trigramas.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
